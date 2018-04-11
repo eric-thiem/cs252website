@@ -1,0 +1,7 @@
+{
+  "name": "sliverscreen",
+  "version": "0.1.0",
+  "description": "cs252 website",
+  "main": "index.js",
+  "repository": "https://github.com/eric-thiem/cs252website.git",
+}
