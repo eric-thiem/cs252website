@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { fireauth } from '../base.js';
 
 import { NavLink } from 'react-router-dom';
-import { Form, Label, Input, Button, Alert } from 'reactstrap';
+import { Form, Label, Input, Button, Alert, Row, Col} from 'reactstrap';
 import './SignIn.css';
 
 class SignIn extends Component {
@@ -13,34 +13,72 @@ class SignIn extends Component {
 
     this.state = {
       signing_in: false,
-      error_message: "",
-      error_visible: "",
+      error_message: '',
+      error_visible: '',
     };
   }
 
-  onSubmit = () => {
+  onSubmit = (ev) => {
+    ev.preventDefault();
+    let self = this;
 
+    fireauth.signInWithEmailAndPassword(ev.target.email.value, ev.target.password.value)
+      .catch(function(err) {
+
+        // Handle errors
+        self.setState({
+          error_message: err.message,
+          error_visible: true,
+        })
+
+      });
   };
 
   render() {
     return (
-      <div className='centered'>
+      <div className='text-center'>
 
-        <Form onSubmit={this.onSubmit}>
+        <Row>
 
-          <Label>
-            Email
-            <Input type='text' name='email'/>
-          </Label>
+          <Col md='5'/>
+          <Col md='2'>
 
-          <Label>
-            Password
-            <Input type='text' name='password'/>
-          </Label>
+            <div className='text-center'>
 
-          <Button type='submit'> Sign In </Button>
+              <Form className='verticalCenter' onSubmit={this.onSubmit}>
 
-        </Form>
+                <h2>Welcome!</h2>
+
+                <div style={{height: '1em'}}/>
+
+                <Input
+                  type='text'
+                  id='email'
+                  bsSize='lg'
+                  placeholder='Email'
+                  style={{border: '1px solid #4682B4'}}/>
+
+                <div style={{height: '1em'}}/>
+
+                <Input type='password'
+                       id='password'
+                       bsSize='lg'
+                       placeholder='Password'
+                       style={{border: '1px solid #4682B4'}}/>
+
+                <div className='space'/>
+
+                <Button className='signInButton'> Sign In </Button>
+
+                <div/>
+
+              </Form>
+
+            </div>
+
+          </Col>
+
+        </Row>
 
       </div>
     )

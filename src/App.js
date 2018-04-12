@@ -43,6 +43,7 @@ class App extends Component {
 
   authHandler = (user) => {
     localStorage.setItem('uid', user.uid);
+
     this.setState({
       uid: user.uid,
     });
