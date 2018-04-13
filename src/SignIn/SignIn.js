@@ -43,7 +43,7 @@ class SignIn extends Component {
           <Col md='5'/>
           <Col md='2'>
 
-            <div className='text-center'>
+            <div>
 
               <Form className='verticalCenter' onSubmit={this.onSubmit}>
 
@@ -56,6 +56,7 @@ class SignIn extends Component {
                   id='email'
                   bsSize='lg'
                   placeholder='Email'
+                  className='input'
                   style={{border: '1px solid #4682B4'}}/>
 
                 <div style={{height: '1em'}}/>
@@ -64,11 +65,26 @@ class SignIn extends Component {
                        id='password'
                        bsSize='lg'
                        placeholder='Password'
+                       className='input'
                        style={{border: '1px solid #4682B4'}}/>
 
-                <div className='space'/>
+                <hr />
 
-                <Button className='signInButton'> Sign In </Button>
+                <NavLink style={{ textDecoration: 'none' }} to="/create-account">
+                  <Button className='signInButton'> Sign In </Button>
+                </NavLink>
+
+                <div style={{height: '1em'}}/>
+
+                <NavLink style={{ textDecoration: 'none' }} to="/create-account">
+                  <Button className='signInButton'> Create Account </Button>
+                </NavLink>
+
+                <div style={{height: '1em'}}/>
+
+                <NavLink style={{ textDecoration: 'none' }} to="/ScribeScholars/forgotPassword">
+                  <p style={{fontSize: '1.2em', color: '#0d39ed', cursor: 'pointer'}}><u>Forgot Password</u></p>
+                </NavLink>
 
                 <div/>
 
