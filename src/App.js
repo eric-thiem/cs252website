@@ -4,6 +4,7 @@ import {Route, Switch, Redirect} from 'react-router-dom';
 import './App.css';
 
 import SignIn from './SignIn/SignIn';
+import CreateAccount from './SignIn/CreateAccount'
 
 class App extends Component {
 
@@ -62,6 +63,12 @@ class App extends Component {
           !this.isSignedIn()
             ? <SignIn/>
             : <Redirect to='/home'/>
+        )}/>
+
+        <Route exact path='/create-account' render={() => (
+          this.isSignedIn()
+            ? <Redirect to='/home'/>
+            : <CreateAccount/>
         )}/>
 
       </Switch>

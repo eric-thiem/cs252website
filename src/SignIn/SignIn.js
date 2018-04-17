@@ -82,7 +82,7 @@ class SignIn extends Component {
 
                 <div style={{height: '1em'}}/>
 
-                <NavLink style={{ textDecoration: 'none' }} to="/ScribeScholars/forgotPassword">
+                <NavLink style={{ textDecoration: 'none' }} to="/forgotPassword">
                   <p style={{fontSize: '1.2em', color: '#0d39ed', cursor: 'pointer'}}><u>Forgot Password</u></p>
                 </NavLink>
 
