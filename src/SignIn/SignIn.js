@@ -14,7 +14,7 @@ class SignIn extends Component {
     this.state = {
       signing_in: false,
       error_message: '',
-      error_visible: '',
+      error_visible: false,
     };
   }
 
@@ -70,25 +70,25 @@ class SignIn extends Component {
 
                 <hr/>
 
-                <NavLink style={{ textDecoration: 'none' }} to="/create-account">
+                <NavLink style={{ textDecoration: 'none' }} to="/home">
                   <Button className='signInButton'> Sign In </Button>
                 </NavLink>
 
                 <div style={{height: '1em'}}/>
 
-                <NavLink style={{ textDecoration: 'none' }} to="/create-account">
-                  <Button className='signInButton'> Create Account </Button>
-                </NavLink>
-
-                <div style={{height: '1em'}}/>
-
-                <NavLink style={{ textDecoration: 'none' }} to="/forgot-password">
-                  <p style={{fontSize: '1.2em', color: '#0d39ed', cursor: 'pointer'}}><u>Forgot Password</u></p>
-                </NavLink>
-
-                <div/>
-
               </Form>
+
+              <NavLink style={{ textDecoration: 'none' }} to="/create-account">
+                <Button className='signInButton'> Create Account </Button>
+              </NavLink>
+
+              <div style={{height: '1em'}}/>
+
+              <NavLink style={{ textDecoration: 'none' }} to="/forgot-password">
+                <p style={{fontSize: '1.2em', color: '#0d39ed', cursor: 'pointer'}}><u>Forgot Password</u></p>
+              </NavLink>
+
+              <div/>
 
             </div>
 

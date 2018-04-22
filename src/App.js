@@ -1,57 +1,22 @@
 import React, {Component} from 'react';
-import firebase from './base.js';
+import {fireauth} from './base.js';
 import {Route, Switch, Redirect} from 'react-router-dom';
 import './App.css';
 
 import SignIn from './SignIn/SignIn';
-import CreateAccount from './SignIn/CreateAccount'
+import CreateAccount from './SignIn/CreateAccount';
+import Home from './Home/Home';
 
 class App extends Component {
 
-  constructor() {
-    super();
-
-    this.state = {
-      uid: null,
-    };
+  componentWillUpdate(){
+    console.log(this.isSignedIn());
   }
 
-  componentWillMount() {
-    this.getUserFromLocalStorage();
-    firebase.auth().onAuthStateChanged(
-      (user) => {
-        if (user) {
-          // Once the user has finished signing in
-          this.authHandler(user);
-        } else {
-          // Signing out
-          this.setState({
-            uid: null,
-          });
-        }
-      }
-    )
-  };
-
-  getUserFromLocalStorage(){
-    const uid = localStorage.getItem('uid');
-    console.log("uid is " + uid);
-    if(uid == null || !uid) return;
-    this.setState({
-      uid: uid,
-    });
-  };
-
-  authHandler = (user) => {
-    localStorage.setItem('uid', user.uid);
-
-    this.setState({
-      uid: user.uid,
-    });
-  };
-
   isSignedIn = () => {
-    return (this.state.uid != null);
+    fireauth.onAuthStateChanged(function(user) {
+      return user;
+    });
   };
 
   render() {
@@ -68,7 +33,13 @@ class App extends Component {
         <Route exact path='/create-account' render={() => (
           this.isSignedIn()
             ? <Redirect to='/home'/>
-            : <CreateAccount/>
+            : <CreateAccount isSignedIn={this.isSignedIn}/>
+        )}/>
+
+        <Route exact path='/home' render={() => (
+          this.isSignedIn()
+            ? <Home/>
+            : <Redirect to='/sign-in'/>
         )}/>
 
       </Switch>

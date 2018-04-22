@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { fireauth, firestore } from '../base.js';
 import { Form, Input, Button, Alert, Row, Col } from 'reactstrap';
+import {Route, Switch, Redirect} from 'react-router-dom';
 import './SignIn.css'
 
 class CreateAccount extends Component {
@@ -15,6 +16,8 @@ class CreateAccount extends Component {
 
       error_message: '',
       error_visible: false,
+
+      account_created: false,
     }
   }
 
@@ -26,19 +29,20 @@ class CreateAccount extends Component {
     let confirm_password = ev.target.confirm_password.value;
 
     if (username === '') {
-      this.setError('Please enter a valid username.')
-
-    } else if (email === '' || !email.includes('@') || !email.includes('.')){
-      this.setError('Pleaes enter a valid email.');
-
+      this.setError('Please enter a valid username.');
+      return;
+    } else if (email === ''){
+      this.setError('Please enter a valid email.');
+      return;
     } else if (password === ''){
       this.setError('Please enter a valid password.');
-
+      return;
     } else if (confirm_password === ''){
       this.setError('Please confirm your password.')
-
+      return;
     } else if (password !== confirm_password){
       this.setError('Passwords do not match.');
+      return;
     }
 
     this.setState({
@@ -51,30 +55,26 @@ class CreateAccount extends Component {
 
   createAccount(email, password){
     let self = this;
-    fireauth.createUserAndRetrieveDataWithEmailAndPassword(email, password).then(function () {
-      self.addUserInfo();
+    fireauth.createUserWithEmailAndPassword(email, password).then(function () {
+      self.addUserInfo(password);
     }).catch(function (error){
-      console.log(error);
+      self.setError(error.message);
     });
   };
 
-  addUserInfo(){
+  addUserInfo(password){
     let self = this;
-    fireauth.onAuthStateChanged((user) => {
-        if (user) {
-          let docRef = firestore.collection("users").doc(user.uid);
-          docRef.set({
-            username: self.state.username,
-            email: self.state.email,
-          }).catch(function(error) {
-            console.log(error);
-          });
-        }/* else {
-          // finished signing out
-          self.setState({ uid: null })
-        }*/
-      }
-    );
+    let docRef = firestore.collection("users").doc(this.state.username);
+    docRef.set({
+      username: self.state.username,
+      email: self.state.email,
+    }).catch(function(error) {
+      console.log(error);
+    });
+
+    self.setState({
+      account_created: true,
+    });
   };
 
   setError(error){
@@ -91,6 +91,13 @@ class CreateAccount extends Component {
   };
 
   render() {
+
+    if(this.state.account_created){
+      return (
+        <Redirect to='/home'/>
+      );
+    }
+
     return (
       <div className='text-center'>
 
@@ -140,11 +147,11 @@ class CreateAccount extends Component {
 
                 <hr/>
 
-                <div style={{display: 'flex', justifyContent: 'center'}}>
+                <Alert color="danger" isOpen={this.state.error_visible} toggle={this.onDismiss}>
+                  {this.state.error_message}
+                </Alert>
 
-                  <Alert color="danger" isOpen={this.state.error_visible} toggle={this.onDismiss}>
-                    {this.state.error_message}
-                  </Alert>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
 
                   <Button className='signInButton'> Create Account </Button>
 
