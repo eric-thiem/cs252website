@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { fireauth } from '../base.js';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { Form, Input, Button, Alert, Row, Col} from 'reactstrap';
 import './SignIn.css';
 
@@ -12,7 +12,7 @@ class SignIn extends Component {
     super(props);
 
     this.state = {
-      signing_in: false,
+      signed_in: false,
       error_message: '',
       error_visible: false,
     };
@@ -22,19 +22,38 @@ class SignIn extends Component {
     ev.preventDefault();
     let self = this;
 
-    fireauth.signInWithEmailAndPassword(ev.target.email.value, ev.target.password.value)
-      .catch(function(err) {
+    let email = ev.target.email.value;
+    let password = ev.target.password.value;
+
+    fireauth.signInWithEmailAndPassword(email, password).then(function (){
+      self.setState({
+        signed_in: true,
+      });
+    }).catch(function(err) {
 
         // Handle errors
         self.setState({
           error_message: err.message,
           error_visible: true,
-        })
+        });
 
       });
   };
 
+  onDismiss = () => {
+    this.setState({
+      error_visible: false,
+    });
+  };
+
   render() {
+
+    if(this.state.signed_in){
+      return (
+        <Redirect to='/home'/>
+      );
+    }
+
     return (
       <div className='text-center'>
 
@@ -70,9 +89,13 @@ class SignIn extends Component {
 
                 <hr/>
 
-                <NavLink style={{ textDecoration: 'none' }} to="/home">
-                  <Button className='signInButton'> Sign In </Button>
-                </NavLink>
+                <Alert color="danger" isOpen={this.state.error_visible} toggle={this.onDismiss}>
+                  {this.state.error_message}
+                </Alert>
+
+                <div style={{display: 'flex', justifyContent: 'center'}}>
+                  <Button type='submit' className='signInButton'> Sign In </Button>
+                </div>
 
                 <div style={{height: '1em'}}/>
 
