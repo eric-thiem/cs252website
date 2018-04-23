@@ -42,20 +42,44 @@ class Main extends Component {
 
         <Route path='/home' render={() => (
           this.isSignedIn()
-            ? <Home/>
+            ? <Home user={this.state.user}/>
             : <SignIn/>
         )}/>
 
         <Route path='/sign-in' render={() => (
           this.isSignedIn()
-            ? <Home/>
+            ? <Home user={this.state.user}/>
             : <SignIn/>
         )}/>
 
         <Route path='/create-account' render={() => (
           this.isSignedIn()
-            ? <Home/>
+            ? <Home user={this.state.user}/>
             : <CreateAccount/>
+        )}/>
+
+        <Route path='/connections' render={() => (
+          this.isSignedIn()
+            ? <Home user={this.state.user} page='connections'/>
+            : <SignIn/>
+        )}/>
+
+        <Route path='/my-reviews' render={() => (
+          this.isSignedIn()
+            ? <Home user={this.state.user} page='my-reviews'/>
+            : <SignIn/>
+        )}/>
+
+        <Route path='/watchlist' render={() => (
+          this.isSignedIn()
+            ? <Home user={this.state.user} page='watchlist'/>
+            : <SignIn/>
+        )}/>
+
+        <Route path='/my-favorites' render={() => (
+          this.isSignedIn()
+            ? <Home user={this.state.user} page='my-favorites'/>
+            : <SignIn/>
         )}/>
 
       </Switch>
