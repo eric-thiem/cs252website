@@ -32,7 +32,6 @@ class Main extends Component {
   }
 
   isSignedIn(){
-    console.log(this.state.user);
     return this.state.user;
   }
 
