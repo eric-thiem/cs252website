@@ -10,25 +10,38 @@ class Main extends Component {
   constructor(props){
     super(props);
 
-    this.state ={
+    this.state = {
       user: null,
     }
   }
 
   componentWillMount() {
-    let self = this;
-    fireauth.onAuthStateChanged((user) => {
-      if(user){
-        sessionStorage.setItem('user', user.uid);
-        self.setState({
-          user: user.uid,
-        });
-      } else {
-        self.setState({
-          user: null,
-        });
-      }
+
+    let user = this.getUser();
+    this.setState({
+      user: user,
     });
+
+    if(this.state.user == null){
+      let self = this;
+      fireauth.onAuthStateChanged((user) => {
+        if(user){
+          sessionStorage.setItem('user', user.uid);
+          self.setState({
+            user: user.uid,
+          });
+        } else {
+          self.setState({
+            user: null,
+          });
+        }
+      });
+    }
+  }
+
+  getUser(){
+    let currentUser = sessionStorage.getItem('user');
+    return currentUser;
   }
 
   isSignedIn(){
