@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { fireauth, firestore } from '../base.js';
 import { Form, Input, Button, Alert, Row, Col } from 'reactstrap';
-import {Route, Switch, Redirect} from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 import './SignIn.css'
 
 class CreateAccount extends Component {
@@ -56,13 +56,13 @@ class CreateAccount extends Component {
   createAccount(email, password){
     let self = this;
     fireauth.createUserWithEmailAndPassword(email, password).then(function () {
-      self.addUserInfo(password);
+      self.addUserInfo();
     }).catch(function (error){
       self.setError(error.message);
     });
   };
 
-  addUserInfo(password){
+  addUserInfo(){
     let self = this;
     let docRef = firestore.collection("users").doc(this.state.username);
     docRef.set({
@@ -94,7 +94,7 @@ class CreateAccount extends Component {
 
     if(this.state.account_created){
       return (
-        <Redirect to='/home'/>
+        <Redirect to='/sign-in'/>
       );
     }
 
