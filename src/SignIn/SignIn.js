@@ -25,11 +25,7 @@ class SignIn extends Component {
     let email = ev.target.email.value;
     let password = ev.target.password.value;
 
-    fireauth.signInWithEmailAndPassword(email, password).then(function (){
-      self.setState({
-        signed_in: true,
-      });
-    }).catch(function(err) {
+    fireauth.signInWithEmailAndPassword(email, password).catch(function(err) {
 
         // Handle errors
         self.setState({
