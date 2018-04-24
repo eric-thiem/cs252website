@@ -1,4 +1,7 @@
 import React, {Component} from 'react'
+import {Redirect} from 'react-router-dom';
+import {fireauth} from "../base";
+
 import { Input, Col,
   Collapse,
   Navbar,
@@ -31,6 +34,11 @@ class Header extends Component {
     });
   };
 
+  signOut = () => {
+    fireauth.signOut();
+    sessionStorage.setItem('user', null);
+  };
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
@@ -41,7 +49,7 @@ class Header extends Component {
     return (
       <div>
         <Navbar color="light" light expand="md">
-          <NavbarBrand href="/"><h1>SliverScreen</h1></NavbarBrand>
+          <NavbarBrand href="/home"><h1>SliverScreen</h1></NavbarBrand>
 
           <Col md='3'>
             <Input type='text' id='search' placeholder='Search movies, television, actors...' onChange={this.onChange}/>
@@ -86,7 +94,6 @@ class Header extends Component {
 
               <UncontrolledDropdown nav inNavbar>
 
-
                 <DropdownToggle nav caret>
                   <i className="fa fa-user fa-fw"/>
                 </DropdownToggle>
@@ -100,7 +107,7 @@ class Header extends Component {
                     </h5>
                   </DropdownItem>
 
-                  <DropdownItem>
+                  <DropdownItem onClick={this.signOut}>
                     <h5>Sign Out</h5>
                   </DropdownItem>
 

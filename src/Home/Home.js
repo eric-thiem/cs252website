@@ -41,34 +41,43 @@ class Home extends Component {
         return (
           <div>
             {this.getHeader()}
+            <div/>
             <Connections/>
           </div>
         );
+
       case 'my-reviews':
         return (
           <div>
             {this.getHeader()}
+            <div/>
             <MyReviews/>
           </div>
         );
+
       case 'watchlist':
         return (
           <div>
             {this.getHeader()}
+            <div/>
             <Watchlist/>
           </div>
         );
+
       case 'my-favorites':
         return (
           <div>
             {this.getHeader()}
+            <div/>
             <MyFavorites/>
           </div>
         );
+
       default:
         return (
           <div>
             {this.getHeader()}
+            <div/>
             <div>
               <Row>
                 <Col md='2'/>

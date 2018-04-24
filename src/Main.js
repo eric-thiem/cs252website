@@ -16,7 +16,6 @@ class Main extends Component {
   }
 
   componentWillMount() {
-
     let user = this.getUser();
     this.setState({
       user: user,
@@ -40,8 +39,7 @@ class Main extends Component {
   }
 
   getUser(){
-    let currentUser = sessionStorage.getItem('user');
-    return currentUser;
+    return sessionStorage.getItem('user');
   }
 
   isSignedIn(){
@@ -49,7 +47,6 @@ class Main extends Component {
   }
 
   render(){
-
     return(
       <Switch>
 
