@@ -44,7 +44,7 @@ class App extends Component {
             : <Redirect to='/sign-in'/>
         )}/>
 
-          <Route path='/movie/:number' render={() => ( <MovieInfo id={this.props.match.params.name} />
+          <Route path='/movie/:number' render={() => ( <MovieInfo imbdid={this.props.match.params.name} />
           )}/>
 
       </Switch>
