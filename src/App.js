@@ -7,6 +7,8 @@ import SignIn from './SignIn/SignIn';
 import CreateAccount from './SignIn/CreateAccount';
 import Home from './Home/Home';
 
+import MovieInfo from './MovieInfo/MovieInfo';
+
 class App extends Component {
 
   componentWillUpdate(){
@@ -41,6 +43,9 @@ class App extends Component {
             ? <Home/>
             : <Redirect to='/sign-in'/>
         )}/>
+
+          <Route path='/movie/:number' render={() => ( <MovieInfo id={this.props.match.params.name} />
+          )}/>
 
       </Switch>
     );

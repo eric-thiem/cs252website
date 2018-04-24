@@ -1,0 +1,24 @@
+.input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 215px;
+    max-width: 215px;
+}
+
+.space {
+    height: 2em;
+}
+
+.verticalCenter {
+    display: flex;
+    flex-direction: column;
+    padding-top: 200px;
+}
+
+.signInButton {
+    background-color: #6495ED !important;
+    border: 3px solid #4682B4;
+    min-width: 200px;
+    max-width: 200px;
+}
