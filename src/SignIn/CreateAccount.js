@@ -55,19 +55,20 @@ class CreateAccount extends Component {
 
   createAccount(email, password){
     let self = this;
-    fireauth.createUserWithEmailAndPassword(email, password).then(function () {
-      self.addUserInfo();
+    fireauth.createUserWithEmailAndPassword(email, password).then(function (user) {
+      self.addUserInfo(user);
     }).catch(function (error){
       self.setError(error.message);
     });
   };
 
-  addUserInfo(){
+  addUserInfo(user){
     let self = this;
-    let docRef = firestore.collection("users").doc(this.state.username);
+    let docRef = firestore.collection("users").doc(user.uid);
     docRef.set({
       username: self.state.username,
       email: self.state.email,
+      connections: [],
     }).catch(function(error) {
       console.log(error);
     });

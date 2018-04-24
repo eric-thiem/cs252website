@@ -4,7 +4,7 @@ class MyReviews extends Component {
 
   render(){
     return (
-      <div>
+      <div className='text-center'>
         <h3>My Reviews!</h3>
       </div>
     );

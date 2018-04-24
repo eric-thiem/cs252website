@@ -68,6 +68,12 @@ class Main extends Component {
             : <CreateAccount/>
         )}/>
 
+        <Route path='/profile' render={() => (
+          this.isSignedIn()
+            ? <Home user={this.state.user} page='profile'/>
+            : <SignIn/>
+        )}/>
+
         <Route path='/connections' render={() => (
           this.isSignedIn()
             ? <Home user={this.state.user} page='connections'/>

@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import {Row, Col} from 'reactstrap'
 import Header from './Header'
+
+import Profile from "../Tabs/Profile";
 import Connections from "../Tabs/Connections";
 import MyReviews from "../Tabs/MyReviews";
 import Watchlist from "../Tabs/Watchlist";
 import MyFavorites from "../Tabs/MyFavorites";
+
+import './Home.css';
 
 class Home extends Component {
   constructor(props){
@@ -27,7 +31,7 @@ class Home extends Component {
         <Row>
           <Col md='2'/>
           <Col md='8'>
-            <Header/>
+            <Header />
           </Col>
         </Row>
       </div>
@@ -37,11 +41,21 @@ class Home extends Component {
   render(){
 
     switch(this.state.page){
+
+      case 'profile':
+        return (
+          <div>
+            {this.getHeader()}
+            <div className='space'/>
+            <Profile/>
+          </div>
+        );
+
       case 'connections':
         return (
           <div>
             {this.getHeader()}
-            <div/>
+            <div className='space'/>
             <Connections/>
           </div>
         );
@@ -50,7 +64,7 @@ class Home extends Component {
         return (
           <div>
             {this.getHeader()}
-            <div/>
+            <div className='space'/>
             <MyReviews/>
           </div>
         );
@@ -59,7 +73,7 @@ class Home extends Component {
         return (
           <div>
             {this.getHeader()}
-            <div/>
+            <div className='space'/>
             <Watchlist/>
           </div>
         );
@@ -68,7 +82,7 @@ class Home extends Component {
         return (
           <div>
             {this.getHeader()}
-            <div/>
+            <div className='space'/>
             <MyFavorites/>
           </div>
         );
@@ -78,7 +92,7 @@ class Home extends Component {
           <div>
             {this.getHeader()}
             <div/>
-            <div>
+            <div className='space'>
               <Row>
                 <Col md='2'/>
                 <Col md='8'>

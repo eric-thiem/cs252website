@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {Redirect} from 'react-router-dom';
 import {fireauth} from "../base";
 
 import { Input, Col,
@@ -61,7 +60,7 @@ class Header extends Component {
             <Nav className="ml-auto" navbar>
 
               <NavItem>
-                <NavLink href="/connections/">
+                <NavLink href="/connections">
                   <h4>
                     Connections
                   </h4>
@@ -69,7 +68,7 @@ class Header extends Component {
               </NavItem>
 
               <NavItem>
-                <NavLink href="/my-reviews/">
+                <NavLink href="/my-reviews">
                   <h4>
                     My Reviews
                   </h4>
@@ -77,7 +76,7 @@ class Header extends Component {
               </NavItem>
 
               <NavItem>
-                <NavLink href="/watchlist/">
+                <NavLink href="/watchlist">
                   <h4>
                     Watchlist
                   </h4>
@@ -85,7 +84,7 @@ class Header extends Component {
               </NavItem>
 
               <NavItem>
-                <NavLink href="/my-favorites/">
+                <NavLink href="/my-favorites">
                   <h4>
                     My Favorites
                   </h4>
@@ -101,13 +100,13 @@ class Header extends Component {
 
                 <DropdownMenu right>
 
-                  <DropdownItem>
+                  <DropdownItem href='/profile'>
                     <h5>
                       Profile
                     </h5>
                   </DropdownItem>
 
-                  <DropdownItem onClick={this.signOut}>
+                  <DropdownItem onClick={this.signOut} href='/sign-in'>
                     <h5>Sign Out</h5>
                   </DropdownItem>
 
