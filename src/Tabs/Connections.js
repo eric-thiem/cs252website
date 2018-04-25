@@ -109,6 +109,8 @@ class Connections extends Component {
 
   render(){
 
+    //TODO make connections a clickable table
+
     if(!this.state.doneLoading){
       return(
         <div className='text-center'>

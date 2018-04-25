@@ -92,6 +92,12 @@ class Main extends Component {
             : <SignIn/>
         )}/>
 
+        <Route path='/movie-page' render={() => (
+          this.isSignedIn()
+            ? <Home uid={this.state.uid} page='movie-page'/>
+            : <SignIn/>
+        )}/>
+
         <Route path='/profile' render={() => (
           this.isSignedIn()
             ? <Home uid={this.state.uid} page='profile'/>

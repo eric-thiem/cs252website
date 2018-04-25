@@ -8,6 +8,7 @@ import MyReviews from "../Tabs/MyReviews";
 import Watchlist from "../Tabs/Watchlist";
 import MyFavorites from "../Tabs/MyFavorites";
 import MovieSearch from "../MovieSearch/MovieSearch";
+import MoviePage from "../MovieSearch/MoviePage";
 
 import './Home.css';
 
@@ -41,8 +42,6 @@ class Home extends Component {
 
   render(){
 
-    //TODO check to make sure that the user is signed in
-
     switch(this.state.page){
 
       case 'profile':
@@ -60,6 +59,15 @@ class Home extends Component {
             {this.getHeader()}
             <div className='space'/>
             <MovieSearch/>
+          </div>
+        );
+
+      case 'movie-page':
+        return (
+          <div>
+            {this.getHeader()}
+            <div className='space'/>
+            <MoviePage/>
           </div>
         );
 

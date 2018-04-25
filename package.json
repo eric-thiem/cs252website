@@ -8,6 +8,7 @@
   "dependencies": {
     "bootstrap": "^4.1.0",
     "firebase": "^4.12.1",
+    "history": "^4.7.2",
     "imdb-api": "^3.1.2",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",

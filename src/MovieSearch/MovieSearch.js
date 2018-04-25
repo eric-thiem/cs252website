@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Row, Col, Jumbotron, Button, Form, Input, InputGroup, InputGroupAddon, Table } from 'reactstrap';
+import history from '../history';
 
 class MovieSearch extends Component {
 
@@ -10,6 +11,9 @@ class MovieSearch extends Component {
       searchName: '',
       searchResults: null,
       showComponent: false,
+
+      movieId: null,
+      movieClicked: false,
     };
 
     this.onButtonClick = this.onButtonClick.bind(this);
@@ -21,7 +25,7 @@ class MovieSearch extends Component {
     let self = this;
     imdb.search(  { title: this.state.searchName,  },
       { apiKey: '32978a97', timeout: 30000, }
-    ).then( SearchResults  => {
+    ).then( SearchResults => {
       self.setState({
         searchResults: SearchResults,
       }, function(){
@@ -37,6 +41,16 @@ class MovieSearch extends Component {
       searchName: event.target.value
     });
   }
+
+  getMovie = (index) => {
+    let movieData = this.state.searchResults.results[index];
+    this.setState({
+      movieId: movieData.imdbid,
+      movieClicked: true,
+    });
+    history.push('/movie-page');
+    window.location.reload();
+  };
 
   render () {
     return (
@@ -70,7 +84,7 @@ class MovieSearch extends Component {
                 {Object.keys(this.state.searchResults.results).map((key, index) => {
                   return (
                     <tbody key={key}>
-                    <tr>
+                    <tr onClick={() => this.getMovie(index)}>
                       <td>{this.state.searchResults.results[index].title}</td>
                       <td>{this.state.searchResults.results[index].year}</td>
                     </tr>
