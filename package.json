@@ -8,9 +8,11 @@
   "dependencies": {
     "bootstrap": "^4.1.0",
     "firebase": "^4.12.1",
+    "history": "^4.7.2",
     "imdb-api": "^3.1.2",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
+    "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "^1.1.4",
     "reactstrap": "^5.0.0"
