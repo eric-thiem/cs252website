@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
-import {Row, Col, Jumbotron, Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-=======
 import {Row, Col, Jumbotron, Button} from 'reactstrap';
 import {firestore} from "../base";
->>>>>>> e170afdee4cc1897cee3991acdc127f2bb2a92bf
 import './MoviePage.css'
 import history from '../history';
 import {firestore} from '../base';
