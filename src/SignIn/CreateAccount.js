@@ -69,6 +69,9 @@ class CreateAccount extends Component {
       username: self.state.username,
       email: self.state.email,
       connections: [],
+      favorites: [],
+      watchlist: [],
+      reviews: [],
     }).catch(function(error) {
       console.log(error);
     });

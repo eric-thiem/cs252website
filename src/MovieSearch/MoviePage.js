@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Jumbotron } from 'reactstrap';
+import {Row, Col, Jumbotron, Button} from 'reactstrap';
 import './MoviePage.css'
 import history from '../history';
 import {firestore} from '../base';
@@ -42,6 +42,14 @@ class MoviePage extends Component {
     });
   }
 
+  addToFavorites = () => {
+
+  };
+
+  addToWatchlist = () => {
+
+  };
+
   render() {
     return (
       <div>
@@ -71,6 +79,12 @@ class MoviePage extends Component {
                   <h5> Director: {this.state.director} </h5>
 
                   <a href={this.state.imdburl}> Visit IMDB Page </a>
+
+                  <div className='space'/>
+                  <Button onClick={this.addToFavorites} size='lg'> Add to Favorites </Button>
+                  <div className='space'/>
+                  <Button onClick={this.addToWatchlist} size='lg'> Add to Watchlist </Button>
+
                 </Col>
 
               </Row>
