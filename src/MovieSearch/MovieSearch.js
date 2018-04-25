@@ -35,8 +35,8 @@ class MovieSearch extends Component
 
         const imdb = require('imdb-api');
         this.setState({ showComponent: true });
-        this.setState({results: imdb.search({ title:this.state.searchName},
-                    { apiKey: '32978a97' }).then(console.log).catch(console.log) })
+        let results = imdb.search({ title:this.state.searchName},
+                    { apiKey: '32978a97' }).then(console.log).catch(console.log);
         console.log(this.state.results);
         console.log(this.state.results);
         console.log(this.state.results);
