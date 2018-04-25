@@ -4,6 +4,8 @@ import Main from './Main';
 import {BrowserRouter} from 'react-router-dom';
 import history from './history';
 
+import MovieInfo from './MovieInfo/MovieInfo';
+
 class App extends Component {
 
   render() {
