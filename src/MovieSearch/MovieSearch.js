@@ -11,9 +11,6 @@ class MovieSearch extends Component {
       searchName: '',
       searchResults: null,
       showComponent: false,
-
-      movieId: null,
-      movieClicked: false,
     };
 
     this.onButtonClick = this.onButtonClick.bind(this);
@@ -44,11 +41,10 @@ class MovieSearch extends Component {
 
   getMovie = (index) => {
     let movieData = this.state.searchResults.results[index];
-    this.setState({
-      movieId: movieData.imdbid,
-      movieClicked: true,
+    history.push({
+      pathname: '/movie-page',
+      search: movieData.imdbid,
     });
-    history.push('/movie-page');
     window.location.reload();
   };
 

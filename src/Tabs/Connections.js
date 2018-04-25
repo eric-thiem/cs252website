@@ -132,16 +132,17 @@ class Connections extends Component {
                   <h2><u>Add A Connection</u></h2>
                   <div style={{height: '1em'}}/>
                   <Row>
-                    <Col md='4'/>
-                    <Col md='4'>
+                    <Col md={{size: '4', offset: '4'}}>
                       <Input type='text' id='connection' bsSize='lg' placeholder='Add a Movie Goer Connection by Username!'/>
                     </Col>
                   </Row>
                   <div style={{height: '1em'}}/>
 
-                  <Alert color="danger" isOpen={this.state.error_visible} toggle={this.onDismiss}>
-                    {this.state.error_message}
-                  </Alert>
+                  <Col md={{size: '4', offset: '4'}}>
+                    <Alert color="danger" isOpen={this.state.error_visible} toggle={this.onDismiss}>
+                      {this.state.error_message}
+                    </Alert>
+                  </Col>
 
                   <div style={{height: '1em'}}/>
 
