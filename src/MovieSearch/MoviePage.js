@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Jumbotron, Button} from 'reactstrap';
+import {Row, Col, Jumbotron, Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import './MoviePage.css'
 import history from '../history';
 import {firestore} from '../base';
@@ -99,3 +99,18 @@ class MoviePage extends Component {
 }
 
 export default MoviePage;
+/*
+<Row>
+    <Col md={{size:6, offset:3 }}>
+        {Object.keys(this.state.reviews).map((key, index) => {
+            return (
+                <Jumbotron>
+                    <h3> \"{this.state.plot.substr(0,50)}\"... </h3>
+                    <hr className="my-2" />
+                    <h5> {this.state.</h5>
+                        </Jumbotron>
+                        );
+                        })}
+                    </Col>
+                </Row>
+*/
