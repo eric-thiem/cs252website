@@ -33,13 +33,18 @@ class MovieSearch extends Component
 
     _onButtonClick(){
 
-        const imdb = require('imdb-api');
-        this.setState({ showComponent: true });
-        let results = imdb.search({ title:this.state.searchName},
-                    { apiKey: '32978a97' }).then(console.log).catch(console.log);
+
+        let imdb = require('imdb-api');
+        let self = this;
+        let MovieInfo = imdb.search( {title: this.state.searchName} , {apiKey: '32978a97', timeout: 30000}).then(SearchResults => { self.setState( {
+
+                r1_title:       SearchResults.results[0].title,
+                results:        SearchResults,
+
+            }) })
+
         console.log(this.state.results);
-        console.log(this.state.results);
-        console.log(this.state.results);
+        console.log(this.state.r1_title);
     }
 
     handleChange(event)
