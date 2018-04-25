@@ -142,7 +142,7 @@ class Connections extends Component {
               </Form>
 
               <div style={{height: '3em'}}/>
-              <h3>My Connections</h3>
+              <h3>My Connections:</h3>
 
               {Object.keys(this.state.connections).map((key, index) => {
                 return (

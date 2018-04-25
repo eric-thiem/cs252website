@@ -95,16 +95,15 @@ class Home extends Component {
           <div>
             {this.getHeader()}
             <div/>
-            <div className='space'>
-              <Row>
-                <Col md='2'/>
-                <Col md='8'>
-                  <div className='text-center'>
-                    <h3> Welcome to SliverScreen! </h3>
-                  </div>
-                </Col>
-              </Row>
-            </div>
+            <div className='space'/>
+            <Row>
+              <Col md='2'/>
+              <Col md='8'>
+                <div className='text-center'>
+                  <h1> Welcome to SliverScreen! </h1>
+                </div>
+              </Col>
+            </Row>
           </div>
         );
     }

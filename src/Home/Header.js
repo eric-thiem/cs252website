@@ -1,18 +1,6 @@
 import React, {Component} from 'react'
 import {fireauth} from "../base";
-
-import { Input, Col,
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap';
+import { Button, Col, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
 class Header extends Component {
   constructor(props) {
@@ -21,21 +9,14 @@ class Header extends Component {
     this.toggle = this.toggle.bind(this);
 
     this.state = {
-      search_text: null,
       isOpen: false
     };
   }
 
-  onChange = (ev) => {
-    let search = ev.target.value;
-    this.setState({
-      search_text: search,
-    });
-  };
-
   signOut = () => {
     fireauth.signOut();
     sessionStorage.setItem('user', null);
+    sessionStorage.setItem('username', null);
   };
 
   toggle() {
@@ -51,7 +32,7 @@ class Header extends Component {
           <NavbarBrand href="/home"><h1>SliverScreen</h1></NavbarBrand>
 
           <Col md='3'>
-            <Input type='text' id='search' placeholder='Search movies, television, actors...' onChange={this.onChange}/>
+            <Button href='/movie-search'> Search Movies </Button>
           </Col>
 
           <NavbarToggler onClick={this.toggle} />

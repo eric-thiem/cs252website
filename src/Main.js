@@ -87,11 +87,11 @@ class Main extends Component {
             : <CreateAccount/>
         )}/>
 
-          <Route path='/movie-search' render={() => (
-              this.isSignedIn()
-                  ? <Home user={this.state.user}/>
-                  : <MovieSearch/>
-          )}/>
+        <Route path='/movie-search' render={() => (
+          this.isSignedIn()
+            ? <MovieSearch/>
+            : <SignIn/>
+        )}/>
 
         <Route path='/profile' render={() => (
           this.isSignedIn()
