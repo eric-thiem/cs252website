@@ -9,20 +9,21 @@ import Watchlist from "../Tabs/Watchlist";
 import MyFavorites from "../Tabs/MyFavorites";
 
 import './Home.css';
+import {firestore} from "../base";
 
 class Home extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
-      user: props.user,
+      uid: props.uid,
+
       page: props.page,
-    }
-  }
+    };
+  };
 
   isSignedIn(){
-    console.log(this.state.user);
-    return this.state.user;
+    return this.state.uid;
   }
 
   getHeader(){
@@ -39,6 +40,8 @@ class Home extends Component {
   }
 
   render(){
+
+    //TODO check to make sure that the user is signed in
 
     switch(this.state.page){
 

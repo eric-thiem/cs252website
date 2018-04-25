@@ -15,3 +15,9 @@ body {
     line-height: 1.42857143;
     margin: 0;
 }
+
+.verticalCenter {
+    display: flex;
+    flex-direction: column;
+    padding-top: 200px;
+}
