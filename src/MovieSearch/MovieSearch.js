@@ -23,7 +23,8 @@ class MovieSearch extends Component
 
         this.state = {
             showComponent: false,
-            searchName: ' ',
+            searchName: '',
+
         };
 
         this._onButtonClick = this._onButtonClick.bind(this);
@@ -31,10 +32,14 @@ class MovieSearch extends Component
     }
 
     _onButtonClick(){
-        const imdb = require('imbd-api');
+
+        const imdb = require('imdb-api');
         this.setState({ showComponent: true });
-        imdb.search({ title: 'Toxic Avenger' },
-                    { apiKey: 'foo' }).then(console.log).catch(console.log);
+        this.setState({results: imdb.search({ title:this.state.searchName},
+                    { apiKey: '32978a97' }).then(console.log).catch(console.log) })
+        console.log(this.state.results);
+        console.log(this.state.results);
+        console.log(this.state.results);
     }
 
     handleChange(event)
@@ -64,13 +69,15 @@ class MovieSearch extends Component
                         <Table hover>
                             <thread>
                                 <tr>
-                                    <th>#</th>
+                                    <th>Title</th>
+                                    <th>Year</th>
                                 </tr>
                             </thread>
                             <tbody>
                                 <tr>
-                                    <th scope='row'>{this.state.searchName}</th>
-                                    <th scope='row'>Hello</th>
+                                    <th scope="row">1</th>
+                                    <td>{this.state.search1title}</td>
+                                    <td>{this.state.search1year}</td>
                                 </tr>
                             </tbody>
                         </Table> :
