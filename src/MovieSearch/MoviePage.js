@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Row, Col, Jumbotron } from 'reactstrap';
 import './MoviePage.css'
 import history from '../history';
+import {firestore} from '../base';
 
 class MoviePage extends Component {
 
