@@ -3,8 +3,8 @@ import {Switch, Route} from 'react-router-dom';
 import Home from './Home/Home';
 import SignIn from './SignIn/SignIn';
 import CreateAccount from './SignIn/CreateAccount';
+import MovieSearch from "./MovieSearch/MovieSearch";
 import {fireauth, firestore} from "./base";
-
 import './App.css';
 
 class Main extends Component {
@@ -86,6 +86,12 @@ class Main extends Component {
             ? <Home uid={this.state.uid}/>
             : <CreateAccount/>
         )}/>
+
+          <Route path='/movie-search' render={() => (
+              this.isSignedIn()
+                  ? <Home user={this.state.user}/>
+                  : <MovieSearch/>
+          )}/>
 
         <Route path='/profile' render={() => (
           this.isSignedIn()
