@@ -4,6 +4,7 @@ import Home from './Home/Home';
 import SignIn from './SignIn/SignIn';
 import CreateAccount from './SignIn/CreateAccount';
 import {fireauth} from "./base";
+import MovieSearch from "./MovieSearch/MovieSearch";
 
 class Main extends Component {
 
@@ -67,6 +68,12 @@ class Main extends Component {
             ? <Home user={this.state.user}/>
             : <CreateAccount/>
         )}/>
+
+          <Route path='/movie-search' render={() => (
+              this.isSignedIn()
+                  ? <Home user={this.state.user}/>
+                  : <MovieSearch/>
+          )}/>
 
         <Route path='/profile' render={() => (
           this.isSignedIn()
