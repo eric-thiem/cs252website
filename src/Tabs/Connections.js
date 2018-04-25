@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Input, Button, Form, Alert} from 'reactstrap';
+import {Row, Col, Input, Button, Form, Alert, Jumbotron} from 'reactstrap';
 import {firestore} from '../base';
 
 class Connections extends Component {
@@ -12,7 +12,7 @@ class Connections extends Component {
       myUsername: sessionStorage.getItem('username'),
 
       connections: [],
-      search_text: null,
+      search_text: '',
 
       error_message: null,
       error_visible: false,
@@ -28,7 +28,7 @@ class Connections extends Component {
     ev.preventDefault();
     let self = this;
     let username = ev.target.connection.value;
-    if(username === sessionStorage.getItem('username')){
+    if(username === sessionStorage.getItem('username') || username === ''){
       self.setState({
         error_message: 'Please enter a valid username',
         error_visible: true,
@@ -121,41 +121,49 @@ class Connections extends Component {
 
       <div>
         <Row>
-          <Col md='4'/>
-          <Col md='4'>
+          <Col md='2'/>
+          <Col md='8'>
+            <Jumbotron>
+              <div className='text-center'>
 
-            <div className='text-center'>
+                <Form onSubmit={this.addConnection}>
+                  <h2><u>Add A Connection</u></h2>
+                  <div style={{height: '1em'}}/>
+                  <Row>
+                    <Col md='4'/>
+                    <Col md='4'>
+                      <Input type='text' id='connection' bsSize='lg' placeholder='Add a Movie Goer Connection by Username!'/>
+                    </Col>
+                  </Row>
+                  <div style={{height: '1em'}}/>
 
-              <Form onSubmit={this.addConnection}>
-                <h3>Add A Connection</h3>
-                <div style={{height: '1em'}}/>
-                <Input type='text' id='connection' bsSize='lg' placeholder='Add a Movie Goer Connection by Username!'/>
-                <div style={{height: '1em'}}/>
+                  <Alert color="danger" isOpen={this.state.error_visible} toggle={this.onDismiss}>
+                    {this.state.error_message}
+                  </Alert>
 
-                <Alert color="danger" isOpen={this.state.error_visible} toggle={this.onDismiss}>
-                  {this.state.error_message}
-                </Alert>
+                  <div style={{height: '1em'}}/>
 
-                <div style={{height: '1em'}}/>
+                  <Button type='submit'> Add Connection </Button>
+                </Form>
 
-                <Button type='submit'> Add Connection </Button>
-              </Form>
+                <div style={{height: '2em'}}/>
+                <hr />
+                <div style={{height: '2em'}}/>
 
-              <div style={{height: '3em'}}/>
-              <h3>My Connections:</h3>
+                <h2><u>My Connections:</u></h2>
 
-              {Object.keys(this.state.connections).map((key, index) => {
-                return (
-                  <div key={key} className='text-center'>
-                    <h3>{this.state.connections[index]}</h3>
-                  </div>
-                );
-              })}
+                {Object.keys(this.state.connections).map((key, index) => {
+                  return (
+                    <div key={key} className='text-center'>
+                      <h3>{this.state.connections[index]}</h3>
+                    </div>
+                  );
+                })}
 
-            </div>
-
+              </div>
+            </Jumbotron>
           </Col>
-          <Col md='4'/>
+          <Col md='2'/>
         </Row>
       </div>
     );

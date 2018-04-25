@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import {Row, Col, Jumbotron, Container, Button, Form, FormGroup, Label, Input, InputGroup, InputGroupAddon, Table } from 'reactstrap';
+import {Row, Col, Jumbotron, Button, Form, Input, InputGroup, InputGroupAddon, Table } from 'reactstrap';
 
-class MovieSearch extends Component
-{
+class MovieSearch extends Component {
 
   constructor(props){
     super(props);
@@ -58,7 +57,8 @@ class MovieSearch extends Component
               </InputGroup>
             </Form>
 
-            {this.state.showComponent ?
+            {this.state.showComponent
+              ?
               <Table hover>
 
                 <thead>

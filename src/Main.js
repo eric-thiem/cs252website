@@ -3,7 +3,6 @@ import {Switch, Route} from 'react-router-dom';
 import Home from './Home/Home';
 import SignIn from './SignIn/SignIn';
 import CreateAccount from './SignIn/CreateAccount';
-import MovieSearch from "./MovieSearch/MovieSearch";
 import {fireauth, firestore} from "./base";
 import './App.css';
 
@@ -31,7 +30,7 @@ class Main extends Component {
         if (user) {
           sessionStorage.setItem('user', user.uid);
           let username = sessionStorage.getItem('username');
-          if(!username) {
+          if(username === 'null') {
             this.getUsername();
           }
           self.setState({
@@ -89,7 +88,7 @@ class Main extends Component {
 
         <Route path='/movie-search' render={() => (
           this.isSignedIn()
-            ? <MovieSearch/>
+            ? <Home uid={this.state.uid} page='movie-search'/>
             : <SignIn/>
         )}/>
 

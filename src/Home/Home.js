@@ -7,9 +7,9 @@ import Connections from "../Tabs/Connections";
 import MyReviews from "../Tabs/MyReviews";
 import Watchlist from "../Tabs/Watchlist";
 import MyFavorites from "../Tabs/MyFavorites";
+import MovieSearch from "../MovieSearch/MovieSearch";
 
 import './Home.css';
-import {firestore} from "../base";
 
 class Home extends Component {
   constructor(props) {
@@ -51,6 +51,15 @@ class Home extends Component {
             {this.getHeader()}
             <div className='space'/>
             <Profile/>
+          </div>
+        );
+
+      case 'movie-search':
+        return (
+          <div>
+            {this.getHeader()}
+            <div className='space'/>
+            <MovieSearch/>
           </div>
         );
 

@@ -32,7 +32,7 @@ class Header extends Component {
           <NavbarBrand href="/home"><h1>SliverScreen</h1></NavbarBrand>
 
           <Col md='3'>
-            <Button href='/movie-search'> Search Movies </Button>
+            <Button href='/movie-search'> Search Movies and TV Shows </Button>
           </Col>
 
           <NavbarToggler onClick={this.toggle} />
