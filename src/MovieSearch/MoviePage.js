@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
 import {Row, Col, Jumbotron, Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-=======
-import {Row, Col, Jumbotron, Button} from 'reactstrap';
 import {firestore} from "../base";
->>>>>>> e170afdee4cc1897cee3991acdc127f2bb2a92bf
 import './MoviePage.css'
 import history from '../history';
-import {firestore} from '../base';
 
 class MoviePage extends Component {
 
@@ -95,7 +90,28 @@ class MoviePage extends Component {
     });
   };
 
+  getReviews(){
+      let self = this;
+      let movieReviews = [];
+      let myRef = firestore.collection('movies').doc('tt0076759');
+      myRef.get().then(function (doc){
+          movieReviews = doc.data();
+          self.setState({
+              reviews: movieReviews,
+              loaded: true,
+          });});}
+
   render() {
+
+      if(this.state.loaded = false)
+      {
+          return(
+              <div className='text-center'>
+                  <h3>Loading Connections...</h3>
+              </div>
+          )
+      }
+
     return (
       <div>
         <Row>
@@ -137,6 +153,21 @@ class MoviePage extends Component {
             </Jumbotron>
           </Col>
         </Row>
+          <Row>
+              <Col md={{size:6, offset:3 }}>
+
+                  {Object.keys(this.state.reviews).map((key, index) => {
+                      return(
+                          <Jumbotron key={key}>
+                              <h3> \"{this.state.reviews[index].body.substr(0,50)}\"... </h3>
+                              <hr className="my-2" />
+                              <h5> {this.state.reviews[index].user}</h5>
+                              <h5> {this.state.reviews[index].user}</h5>
+                          </Jumbotron>
+                      );
+                  })}
+              </Col>
+          </Row>
       </div>
     );
   }
