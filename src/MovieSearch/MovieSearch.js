@@ -12,7 +12,8 @@ import {Row,
         Input,
         InputGroup,
         InputGroupAddon,
-        Table} from 'reactstrap';
+        Table,}
+        from 'reactstrap';
 
 class MovieSearch extends Component
 {
@@ -24,6 +25,8 @@ class MovieSearch extends Component
         this.state = {
             showComponent: false,
             searchName: '',
+            redirect: false,
+            element: 0,
 
         };
 
@@ -33,26 +36,53 @@ class MovieSearch extends Component
 
     _onButtonClick(){
 
-
         let imdb = require('imdb-api');
 
         imdb.search({
-            title: 'Toxic Avenger'
+            title: this.state.searchName
         }, {
             apiKey: '32978a97'
         }).then(console.log).catch(console.log);
 
 
         let self = this;
-        let MovieInfo = imdb.search( {title: this.state.searchName} , {apiKey: '32978a97', timeout: 30000}).then(SearchResults => { self.setState( {
+        let Moviesearch = imdb.search(  { title: this.state.searchName,  },
+                                        { apiKey: '32978a97', timeout: 30000, }
+                                        ).then( SearchResults => {
+                self.setState({ r1_title:   SearchResults.results[0].title      ,
+                                r1_year:    SearchResults.results[0].year       ,
+                                r1_id:      SearchResults.results[0].imdbid     ,
+                                r2_title:   SearchResults.results[1].title      ,
+                                r2_year:    SearchResults.results[1].year       ,
+                                r2_id:      SearchResults.results[1].imdbid     ,
+                                r3_title:   SearchResults.results[2].title      ,
+                                r3_year:    SearchResults.results[2].year       ,
+                                r3_id:      SearchResults.results[2].imdbid     ,
+                                r4_title:   SearchResults.results[3].title      ,
+                                r4_year:    SearchResults.results[3].year       ,
+                                r4_id:      SearchResults.results[3].imdbid     ,
+                                r5_title:   SearchResults.results[4].title      ,
+                                r5_year:    SearchResults.results[4].year       ,
+                                r5_id:      SearchResults.results[4].imdbid     ,
+                                r6_title:   SearchResults.results[5].title      ,
+                                r6_year:    SearchResults.results[5].year       ,
+                                r6_id:      SearchResults.results[5].imdbid     ,
+                                r7_title:   SearchResults.results[6].title      ,
+                                r7_year:    SearchResults.results[6].year       ,
+                                r7_id:      SearchResults.results[6].imdbid     ,
+                                r8_title:   SearchResults.results[7].title      ,
+                                r8_year:    SearchResults.results[7].year       ,
+                                r8_id:      SearchResults.results[7].imdbid     ,
+                                r9_title:   SearchResults.results[8].title      ,
+                                r9_year:    SearchResults.results[8].year       ,
+                                r9_id:      SearchResults.results[8].imdbid     ,
+                                r10_title:  SearchResults.results[9].title      ,
+                                r10_year:   SearchResults.results[9].year       ,
+                                r10_id:     SearchResults.results[9].imdbid     ,
+                });
+        });
 
-                r1_title:       SearchResults.results[0].title,
-                results:        SearchResults,
-
-            }) })
-
-        console.log(this.state.results);
-        console.log(this.state.r1_title);
+        this.state.showComponent = true;
     }
 
     handleChange(event)
@@ -82,15 +112,50 @@ class MovieSearch extends Component
                         <Table hover>
                             <thread>
                                 <tr>
-                                    <th>Title</th>
-                                    <th>Year</th>
+                                    <td>Title</td>
+                                    <td>Year</td>
                                 </tr>
                             </thread>
                             <tbody>
+                                <tr onClick={() => {}} >
+                                    <td>{this.state.r1_title}</td>
+                                    <td>{this.state.r1_year}</td>
+                                </tr>
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>{this.state.search1title}</td>
-                                    <td>{this.state.search1year}</td>
+                                    <td>{this.state.r2_title}</td>
+                                    <td>{this.state.r2_year}</td>
+                                </tr>
+                                <tr>
+                                    <td>{this.state.r3_title}</td>
+                                    <td>{this.state.r3_year}</td>
+                                </tr>
+                                <tr>
+                                    <td>{this.state.r4_title}</td>
+                                    <td>{this.state.r4_year}</td>
+                                </tr>
+                                <tr>
+                                    <td>{this.state.r5_title}</td>
+                                    <td>{this.state.r5_year}</td>
+                                </tr>
+                                <tr>
+                                    <td>{this.state.r6_title}</td>
+                                    <td>{this.state.r6_year}</td>
+                                </tr>
+                                <tr>
+                                    <td>{this.state.r7_title}</td>
+                                    <td>{this.state.r7_year}</td>
+                                </tr>
+                                <tr>
+                                    <td>{this.state.r8_title}</td>
+                                    <td>{this.state.r8_year}</td>
+                                </tr>
+                                <tr>
+                                    <td>{this.state.r9_title}</td>
+                                    <td>{this.state.r9_year}</td>
+                                </tr>
+                                <tr>
+                                    <td>{this.state.r10_title}</td>
+                                    <td>{this.state.r10_year}</td>
                                 </tr>
                             </tbody>
                         </Table> :
