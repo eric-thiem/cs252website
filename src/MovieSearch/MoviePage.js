@@ -3,7 +3,6 @@ import {Row, Col, Jumbotron, Button} from 'reactstrap';
 import {firestore} from "../base";
 import './MoviePage.css'
 import history from '../history';
-import {firestore} from '../base';
 
 class MoviePage extends Component {
 
