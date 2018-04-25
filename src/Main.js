@@ -3,7 +3,9 @@ import {Switch, Route} from 'react-router-dom';
 import Home from './Home/Home';
 import SignIn from './SignIn/SignIn';
 import CreateAccount from './SignIn/CreateAccount';
-import {fireauth} from "./base";
+import {fireauth, firestore} from "./base";
+
+import './App.css';
 
 class Main extends Component {
 
@@ -11,39 +13,56 @@ class Main extends Component {
     super(props);
 
     this.state = {
-      user: null,
+      uid: null,
+      username: null,
     }
   }
 
   componentWillMount() {
-    let user = this.getUser();
+    let uid = sessionStorage.getItem('user');
+
     this.setState({
-      user: user,
+      uid: uid,
     });
 
-    if(this.state.user == null){
+    if(this.state.uid == null) {
       let self = this;
       fireauth.onAuthStateChanged((user) => {
-        if(user){
+        if (user) {
           sessionStorage.setItem('user', user.uid);
+          let username = sessionStorage.getItem('username');
+          if(!username) {
+            this.getUsername();
+          }
           self.setState({
-            user: user.uid,
+            uid: user.uid,
           });
         } else {
           self.setState({
-            user: null,
+            uid: null,
+            username: null,
           });
         }
       });
     }
   }
 
-  getUser(){
-    return sessionStorage.getItem('user');
-  }
+  getUsername = () => {
+    let uid = sessionStorage.getItem('user');
+    let self = this;
+    firestore.collection('users').doc(uid).get().then((doc) => {
+      self.setState({
+        username: doc.data().username,
+      }, function () {
+        sessionStorage.setItem('username', this.state.username);
+      });
+    }).catch((error) => {
+      console.log('Error getting username: ', error);
+    });
+  };
 
   isSignedIn(){
-    return this.state.user;
+    return this.state.uid;
   }
 
   render(){
@@ -52,49 +71,49 @@ class Main extends Component {
 
         <Route path='/home' render={() => (
           this.isSignedIn()
-            ? <Home user={this.state.user}/>
+            ? <Home uid={this.state.uid}/>
             : <SignIn/>
         )}/>
 
         <Route path='/sign-in' render={() => (
           this.isSignedIn()
-            ? <Home user={this.state.user}/>
+            ? <Home uid={this.state.uid}/>
             : <SignIn/>
         )}/>
 
         <Route path='/create-account' render={() => (
           this.isSignedIn()
-            ? <Home user={this.state.user}/>
+            ? <Home uid={this.state.uid}/>
             : <CreateAccount/>
         )}/>
 
         <Route path='/profile' render={() => (
           this.isSignedIn()
-            ? <Home user={this.state.user} page='profile'/>
+            ? <Home uid={this.state.uid} page='profile'/>
             : <SignIn/>
         )}/>
 
         <Route path='/connections' render={() => (
           this.isSignedIn()
-            ? <Home user={this.state.user} page='connections'/>
+            ? <Home uid={this.state.uid} page='connections'/>
             : <SignIn/>
         )}/>
 
         <Route path='/my-reviews' render={() => (
           this.isSignedIn()
-            ? <Home user={this.state.user} page='my-reviews'/>
+            ? <Home uid={this.state.uid} page='my-reviews'/>
             : <SignIn/>
         )}/>
 
         <Route path='/watchlist' render={() => (
           this.isSignedIn()
-            ? <Home user={this.state.user} page='watchlist'/>
+            ? <Home uid={this.state.uid} page='watchlist'/>
             : <SignIn/>
         )}/>
 
         <Route path='/my-favorites' render={() => (
           this.isSignedIn()
-            ? <Home user={this.state.user} page='my-favorites'/>
+            ? <Home uid={this.state.uid} page='my-favorites'/>
             : <SignIn/>
         )}/>
 
