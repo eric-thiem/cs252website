@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import {Row, Col, Jumbotron, Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
+=======
+import {Row, Col, Jumbotron, Button} from 'reactstrap';
+import {firestore} from "../base";
+>>>>>>> e170afdee4cc1897cee3991acdc127f2bb2a92bf
 import './MoviePage.css'
 import history from '../history';
 import {firestore} from '../base';
@@ -43,11 +48,51 @@ class MoviePage extends Component {
   }
 
   addToFavorites = () => {
+    let self = this;
+    let currentFavorites = [];
+    let myRef = firestore.collection('users').doc(sessionStorage.getItem('user'));
 
+    myRef.get().then(function (doc){
+      currentFavorites = doc.data().favorites;
+
+      let movieData = {
+        title: self.state.title,
+        poster: self.state.poster,
+        rating: self.state.rating,
+        type: self.state.type,
+      };
+      currentFavorites.push(movieData);
+
+      myRef.update({
+        favorites: currentFavorites
+      }).catch(function (error) {
+        console.error("Error updating favorites" + (error));
+      });
+    });
   };
 
   addToWatchlist = () => {
+    let self = this;
+    let currentWatchlist = [];
+    let myRef = firestore.collection('users').doc(sessionStorage.getItem('user'));
 
+    myRef.get().then(function (doc){
+      currentWatchlist = doc.data().watchlist;
+
+      let movieData = {
+        title: self.state.title,
+        poster: self.state.poster,
+        rating: self.state.rating,
+        type: self.state.type,
+      };
+      currentWatchlist.push(movieData);
+
+      myRef.update({
+        watchlist: currentWatchlist
+      }).catch(function (error) {
+        console.error("Error updating watchlist" + (error));
+      });
+    });
   };
 
   render() {
