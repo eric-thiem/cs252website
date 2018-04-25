@@ -35,6 +35,14 @@ class MovieSearch extends Component
 
 
         let imdb = require('imdb-api');
+
+        imdb.search({
+            title: 'Toxic Avenger'
+        }, {
+            apiKey: '32978a97'
+        }).then(console.log).catch(console.log);
+
+
         let self = this;
         let MovieInfo = imdb.search( {title: this.state.searchName} , {apiKey: '32978a97', timeout: 30000}).then(SearchResults => { self.setState( {
 
