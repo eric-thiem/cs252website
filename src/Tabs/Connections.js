@@ -16,6 +16,7 @@ class Connections extends Component {
 
       error_message: null,
       error_visible: false,
+      doneLoading: false,
     };
   }
 
@@ -40,13 +41,14 @@ class Connections extends Component {
       snapshot.forEach(doc => {
         if(doc.data().username === username){
           self.addToConnectionArray(doc.id, username);
-        }
-        index++;
-        if(index === snapshot.size - 1){
-          self.setState({
-            error_message: 'Unable to find user.',
-            error_visible: true,
-          });
+        } else {
+          index++;
+          if(index === snapshot.size){
+            self.setState({
+              error_message: 'Unable to find user.',
+              error_visible: true,
+            });
+          }
         }
       });
     }).catch((error) => {
@@ -87,7 +89,16 @@ class Connections extends Component {
   }
 
   getConnections(){
-
+    let self = this;
+    let myConnections = [];
+    let myRef = firestore.collection('users').doc(sessionStorage.getItem('user'));
+    myRef.get().then(function (doc){
+      myConnections = doc.data().connections;
+      self.setState({
+        connections: myConnections,
+        doneLoading: true,
+      });
+    });
   }
 
   onDismiss = () => {
@@ -97,6 +108,14 @@ class Connections extends Component {
   };
 
   render(){
+
+    if(!this.state.doneLoading){
+      return(
+        <div className='text-center'>
+          <h3>Loading Connections...</h3>
+        </div>
+      );
+    }
 
     return (
 
@@ -124,6 +143,14 @@ class Connections extends Component {
 
               <div style={{height: '3em'}}/>
               <h3>My Connections</h3>
+
+              {Object.keys(this.state.connections).map((key, index) => {
+                return (
+                  <div key={key} className='text-center'>
+                    <h3>{this.state.connections[index]}</h3>
+                  </div>
+                );
+              })}
 
             </div>
 
