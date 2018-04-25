@@ -123,17 +123,16 @@ class Connections extends Component {
 
       <div>
         <Row>
-          <Col md='2'/>
-          <Col md='8'>
+          <Col md={{size: '8', offset: '2'}}>
             <Jumbotron>
               <div className='text-center'>
 
                 <Form onSubmit={this.addConnection}>
-                  <h2><u>Add A Connection</u></h2>
+                  <h2><u>Add A Connection To A Fellow Movie Goer!</u></h2>
                   <div style={{height: '1em'}}/>
                   <Row>
                     <Col md={{size: '4', offset: '4'}}>
-                      <Input type='text' id='connection' bsSize='lg' placeholder='Add a Movie Goer Connection by Username!'/>
+                      <Input type='text' id='connection' bsSize='lg' placeholder='Enter their username!'/>
                     </Col>
                   </Row>
                   <div style={{height: '1em'}}/>
