@@ -1,5 +1,5 @@
-import React, {Component} from 'react'
-import {fireauth} from "../base";
+import React, {Component} from 'react';
+import {fireauth} from '../base';
 import { Button, Col, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import history from '../history';
 
