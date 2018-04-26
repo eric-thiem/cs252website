@@ -60,15 +60,18 @@ class MoviePage extends Component {
         poster: self.state.poster,
         rating: self.state.rating,
         type: self.state.type,
+        year: self.state._year_data,
+        imdbid: self.state.imdbid,
         imdburl: self.state.imdburl,
       };
+
       currentFavorites.push(movieData);
 
       myRef.update({
         favorites: currentFavorites
       }).then(function() {
         self.setState({
-          favorites_message: `Successfully added ${self.state.title} to your favorite\'s list.`,
+          favorites_message: `Successfully added ${self.state.title} to your favorite's list.`,
           favorites_visible: true,
         });
       }).catch(function (error) {
@@ -90,6 +93,8 @@ class MoviePage extends Component {
         poster: self.state.poster,
         rating: self.state.rating,
         type: self.state.type,
+        year: self.state._year_data,
+        imdbid: self.state.imdbid,
         imdburl: self.state.imdburl,
       };
       currentWatchlist.push(movieData);
@@ -189,18 +194,3 @@ class MoviePage extends Component {
 }
 
 export default MoviePage;
-/*
-<Row>
-    <Col md={{size:6, offset:3 }}>
-        {Object.keys(this.state.reviews).map((key, index) => {
-            return (
-                <Jumbotron>
-                    <h3> \"{this.state.plot.substr(0,50)}\"... </h3>
-                    <hr className="my-2" />
-                    <h5> {this.state.</h5>
-                        </Jumbotron>
-                        );
-                        })}
-                    </Col>
-                </Row>
-*/

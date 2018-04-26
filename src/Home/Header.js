@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {fireauth} from "../base";
 import { Button, Col, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import history from '../history';
 
 class Header extends Component {
   constructor(props) {
@@ -24,6 +25,15 @@ class Header extends Component {
       isOpen: !this.state.isOpen
     });
   }
+
+  onProfile = () => {
+    let user = sessionStorage.getItem('username');
+    history.push({
+      pathname: '/profile',
+      search: user,
+    });
+    window.location.reload();
+  };
 
   render(){
     return (
@@ -81,7 +91,7 @@ class Header extends Component {
 
                 <DropdownMenu right>
 
-                  <DropdownItem href='/profile'>
+                  <DropdownItem onClick={this.onProfile}>
                     <h5>
                       Profile
                     </h5>
