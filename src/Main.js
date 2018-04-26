@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Switch, Route} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import Home from './Home/Home';
 import SignIn from './SignIn/SignIn';
 import CreateAccount from './SignIn/CreateAccount';
@@ -76,7 +76,7 @@ class Main extends Component {
 
         <Route path='/sign-in' render={() => (
           this.isSignedIn()
-            ? <Home uid={this.state.uid}/>
+            ? <Redirect to='/home'/>
             : <SignIn/>
         )}/>
 
@@ -126,6 +126,10 @@ class Main extends Component {
           this.isSignedIn()
             ? <Home uid={this.state.uid} page='my-favorites'/>
             : <SignIn/>
+        )}/>
+
+        <Route path='' render={() => (
+          <Redirect to='/sign-in'/>
         )}/>
 
       </Switch>
