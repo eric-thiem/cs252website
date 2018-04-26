@@ -43,19 +43,36 @@ class Watchlist extends Component {
       <div>
         <Row>
           <Col md={{size: '8', offset: '2'}}>
-            <Jumbotron>
-              <div className='text-center'>
 
-                {Object.keys(this.state.watchlist).map((key, index) => {
-                  return (
-                    <div key={key} className='text-center'>
-                      <h3>{this.state.connections[index]}</h3>
-                    </div>
-                  );
-                })}
+            <div className='text-center'>
+              <h1>Watchlist</h1>
+            </div>
 
-              </div>
-            </Jumbotron>
+            <div className='space'/>
+
+            {Object.keys(this.state.watchlist).map((key, index) => {
+              return (
+
+                <Jumbotron>
+                  <Row>
+                    <Col md='4'>
+                      <img src={this.state.watchlist[index].poster}/>
+                    </Col>
+
+                    <Col md='6'>
+
+                      <h1> {this.state.watchlist[index].title} </h1>
+
+                      <h3> Rating: {this.state.watchlist[index].rating} </h3>
+
+                      <a href={this.state.watchlist[index].imdburl}> Visit IMDB Page </a>
+
+                    </Col>
+                  </Row>
+                </Jumbotron>
+
+              );
+            })}
           </Col>
         </Row>
       </div>

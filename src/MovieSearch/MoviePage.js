@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Jumbotron, Button} from 'reactstrap';
+import {Row, Col, Jumbotron, Button, Alert} from 'reactstrap';
 import {firestore} from "../base";
 import './MoviePage.css'
 import history from '../history';
@@ -11,6 +11,11 @@ class MoviePage extends Component {
 
     this.state = {
       imdbID: history.location.search.slice(1),
+
+      favorites_message: '',
+      watch_message: '',
+      favorites_visible: false,
+      watchlist_visible: false,
     };
   }
 
@@ -55,11 +60,17 @@ class MoviePage extends Component {
         poster: self.state.poster,
         rating: self.state.rating,
         type: self.state.type,
+        imdburl: self.state.imdburl,
       };
       currentFavorites.push(movieData);
 
       myRef.update({
         favorites: currentFavorites
+      }).then(function() {
+        self.setState({
+          favorites_message: `Successfully added ${self.state.title} to your favorite\'s list.`,
+          favorites_visible: true,
+        });
       }).catch(function (error) {
         console.error("Error updating favorites" + (error));
       });
@@ -79,14 +90,34 @@ class MoviePage extends Component {
         poster: self.state.poster,
         rating: self.state.rating,
         type: self.state.type,
+        imdburl: self.state.imdburl,
       };
       currentWatchlist.push(movieData);
 
       myRef.update({
         watchlist: currentWatchlist
+      }).then(function() {
+        self.setState({
+          watch_message: `Successfully added ${self.state.title} to your watchlist.`,
+          watchlist_visible: true,
+        });
       }).catch(function (error) {
         console.error("Error updating watchlist" + (error));
       });
+    });
+  };
+
+  onFavoritesDismiss = () => {
+    this.setState({
+      favorites_visible: false,
+      favorites_message: '',
+    });
+  };
+
+  onWatchlistDismiss = () => {
+    this.setState({
+      watchlist_visible: false,
+      watch_message: '',
     });
   };
 
@@ -122,8 +153,27 @@ class MoviePage extends Component {
 
                   <div className='space'/>
                   <Button onClick={this.addToFavorites} size='lg'> Add to Favorites </Button>
+
+                  {this.state.favorites_visible
+                    ? <div className='space'/>
+                    : <div/>
+                  }
+
+                  <Alert color="success" isOpen={this.state.favorites_visible} toggle={this.onFavoritesDismiss}>
+                    {this.state.favorites_message}
+                  </Alert>
+
                   <div className='space'/>
                   <Button onClick={this.addToWatchlist} size='lg'> Add to Watchlist </Button>
+
+                  {this.state.watchlist_visible
+                    ? <div className='space'/>
+                    : <div/>
+                  }
+
+                  <Alert color="success" isOpen={this.state.watchlist_visible} toggle={this.onWatchlistDismiss}>
+                    {this.state.watch_message}
+                  </Alert>
 
                 </Col>
 
