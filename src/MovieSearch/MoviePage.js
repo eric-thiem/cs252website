@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {Row, Col, Jumbotron, Button, Alert} from 'reactstrap';
 import {firestore} from "../base";
 import './MoviePage.css'
 import history from '../history';
