@@ -8,6 +8,8 @@ class Watchlist extends Component {
     super(props);
 
     this.state = {
+      myRef: firestore.collection('users').doc(sessionStorage.getItem('user')),
+      watchlist: [],
       doneLoading: false,
     }
   }
@@ -19,8 +21,7 @@ class Watchlist extends Component {
   getWatchlist(){
     let self = this;
     let myWatchlist = [];
-    let myRef = firestore.collection('users').doc(sessionStorage.getItem('user'));
-    myRef.get().then(function (doc){
+    this.state.myRef.onSnapshot(function (doc){
       myWatchlist = doc.data().watchlist;
       self.setState({
         watchlist: myWatchlist,
@@ -28,6 +29,16 @@ class Watchlist extends Component {
       });
     });
   }
+
+  removeFromWatchlist = (index) => {
+    let self = this;
+    this.state.watchlist.splice(index, 1);
+    this.state.myRef.update({
+      watchlist: self.state.watchlist,
+    }).catch(function(error){
+      console.log('Error deleting from watchlist', (error));
+    })
+  };
 
   render(){
 
@@ -53,7 +64,7 @@ class Watchlist extends Component {
             {Object.keys(this.state.watchlist).map((key, index) => {
               return (
 
-                <Jumbotron>
+                <Jumbotron key={key}>
                   <Row>
                     <Col md='4'>
                       <img src={this.state.watchlist[index].poster}/>
@@ -71,7 +82,7 @@ class Watchlist extends Component {
                       <Button size='lg'> Write Review </Button>
 
                       <div className='space'/>
-                      <Button size='lg'> Remove from Favorites </Button>
+                      <Button size='lg' onClick={() => this.removeFromWatchlist(index)}> Remove from Watchlist </Button>
 
                     </Col>
                   </Row>
