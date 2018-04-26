@@ -68,7 +68,7 @@ class Main extends Component {
     return(
       <Switch>
 
-        <Route path='/home' render={() => (
+        <Route path={process.env.PUBLIC_URL + '/home'} render={() => (
           this.isSignedIn()
             ? <Home uid={this.state.uid}/>
             : <SignIn/>
