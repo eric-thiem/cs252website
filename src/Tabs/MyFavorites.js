@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {Row, Col, Jumbotron} from 'reactstrap';
+import {Row, Col, Jumbotron, Button} from 'reactstrap';
 import {firestore} from "../base";
+import './Tabs.css';
 
 class Watchlist extends Component {
 
@@ -66,6 +67,12 @@ class Watchlist extends Component {
                       <h3> Rating: {this.state.favorites[index].rating} </h3>
 
                       <a href={this.state.favorites[index].imdburl}> Visit IMDB Page </a>
+
+                      <div className='space'/>
+                      <Button size='lg'> Write Review </Button>
+
+                      <div className='space'/>
+                      <Button size='lg'> Remove from Favorites </Button>
 
                     </Col>
                   </Row>

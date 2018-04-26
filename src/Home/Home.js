@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col} from 'reactstrap'
+import {Row, Col, Jumbotron} from 'reactstrap'
 import Header from './Header'
 
 import Profile from "../Tabs/Profile";
@@ -114,11 +114,12 @@ class Home extends Component {
             <div/>
             <div className='space'/>
             <Row>
-              <Col md='2'/>
-              <Col md='8'>
-                <div className='text-center'>
-                  <h1> Welcome to SliverScreen! </h1>
-                </div>
+              <Col md={{size: '8', offset: '2'}}>
+                <Jumbotron>
+                  <div className='text-center'>
+                    <h1> Welcome to SliverScreen! </h1>
+                  </div>
+                </Jumbotron>
               </Col>
             </Row>
           </div>

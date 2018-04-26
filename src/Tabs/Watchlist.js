@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Jumbotron} from 'reactstrap';
+import {Row, Col, Jumbotron, Button} from 'reactstrap';
 import {firestore} from "../base";
 
 class Watchlist extends Component {
@@ -66,6 +66,12 @@ class Watchlist extends Component {
                       <h3> Rating: {this.state.watchlist[index].rating} </h3>
 
                       <a href={this.state.watchlist[index].imdburl}> Visit IMDB Page </a>
+
+                      <div className='space'/>
+                      <Button size='lg'> Write Review </Button>
+
+                      <div className='space'/>
+                      <Button size='lg'> Remove from Favorites </Button>
 
                     </Col>
                   </Row>

@@ -11,6 +11,7 @@ class Connections extends Component {
     this.state = {
       uid: this.props.uid,
       myUsername: sessionStorage.getItem('username'),
+      myRef: firestore.collection('users').doc(sessionStorage.getItem('user')),
 
       connections: [],
       search_text: '',
@@ -92,8 +93,7 @@ class Connections extends Component {
   getConnections(){
     let self = this;
     let myConnections = [];
-    let myRef = firestore.collection('users').doc(sessionStorage.getItem('user'));
-    myRef.get().then(function (doc){
+    this.state.myRef.onSnapshot(function (doc){
       myConnections = doc.data().connections;
       self.setState({
         connections: myConnections,
