@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {Row, Form, FormGroup, Label, Input, Col, Jumbotron, Button, Badge, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
-import {firestore} from "../base";
 import './MoviePage.css'
 import history from '../history';
 
