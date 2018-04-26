@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Jumbotron, Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
+import {Row, Form, FormGroup, Label, Input, Col, Jumbotron, Button, Badge, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap';
 import {firestore} from "../base";
 import './MoviePage.css'
 import history from '../history';
@@ -11,12 +11,18 @@ class MoviePage extends Component {
 
     this.state = {
       imdbID: history.location.search.slice(1),
+      loaded: false,
+      modal:  false,
+      reviewBodyBody: '',
     };
+
+    this.addReview = this.addReview.bind(this);
   }
 
   componentWillMount(){
     const imdb = require('imdb-api');
     let self = this;
+    this.getReviews()
     imdb.getById( self.state.imdbID , {apiKey: '32978a97', timeout: 30000}).then(movie => {
       self.setState( {
         title:          movie.title         ,
@@ -90,20 +96,86 @@ class MoviePage extends Component {
     });
   };
 
-  getReviews(){
+  addReview = () => {
+    let self = this;
+    this.setState({
+        modal: !this.state.modal
+    })
+  }
+
+  handleTextChange = (event) => {
+    this.setState({
+       reviewBody:  event.target.value
+    })
+  }
+
+  handleRatingChange = (event) => {
+    this.setState({
+        reviewRating: event.target.value
+    })
+  }
+
+  submitReview = () => {
+    this.setState({
+        modal: !this.state.modal
+    });
+
+      let self = this;
+      let currentReviews = [];
+      let myRef = firestore.collection('movies').doc(this.state.imdbID);
+
+      console.log('myRef');
+      console.log(myRef);
+
+      myRef.get().then(function (doc){
+          currentReviews = doc.data().reviews;
+
+          let rat;
+          if     (self.state.reviewRating == "★" )        { rat = 1 }
+          else if(self.state.reviewRating == "★★" )        { rat = 2 }
+          else if(self.state.reviewRating == "★★★" )       { rat = 3 }
+          else if(self.state.reviewRating == "★★★★" )      { rat = 4 }
+          else if(self.state.reviewRating == "★★★★★" )      { rat = 5 }
+
+
+          let movieReview = {
+              body: self.state.reviewBody,
+              rating: rat,
+              user: sessionStorage.getItem('username'),
+          };
+          currentReviews.push(movieReview);
+
+          myRef.update({
+              reviews: currentReviews
+          }).catch(function (error) {
+              console.error("Error updating reviews" + (error));
+          });
+      });
+
+  };
+
+  getReviews()
+  {
       let self = this;
       let movieReviews = [];
       let myRef = firestore.collection('movies').doc('tt0076759');
       myRef.get().then(function (doc){
-          movieReviews = doc.data();
+          console.log(doc.data());
+          movieReviews = doc.data().reviews;
           self.setState({
               reviews: movieReviews,
               loaded: true,
-          });});}
+          }, function(){
+              console.log(this.state.reviews);
+          });
+      }).catch(function(error){
+          console.log('error gettting reviews' + (error));
+      });
+    }
 
   render() {
 
-      if(this.state.loaded = false)
+      if(this.state.loaded === false)
       {
           return(
               <div className='text-center'>
@@ -111,9 +183,33 @@ class MoviePage extends Component {
               </div>
           )
       }
-
+    console.log(this.state.reviews);
     return (
       <div>
+        <Modal isOpen={this.state.modal} toggle={this.getReviews} className={this.props.className}>
+            <ModalHeader toggle={this.getReviews}><strong>Write a Review</strong></ModalHeader>
+            <ModalBody>
+
+              <Form>
+                <FormGroup>
+                    <Label for="reviewBody">Review:</Label>
+                    <Input onChange={this.handleTextChange} value={this.state.reviewBody} type="textarea" bsSize='lg' name="text" id="reviewBody" />
+                    <Label for="exampleSelect">Rating:</Label>
+                    <Input onChange={this.handleRatingChange} value={this.state.reviewRating} type="select" name="select" id="exampleSelect">
+                        <option>★</option>
+                        <option>★★</option>
+                        <option>★★★</option>
+                        <option>★★★★</option>
+                        <option>★★★★★</option>
+                    </Input>
+                </FormGroup>
+              </Form>
+
+            </ModalBody>
+            <ModalFooter>
+                <Button onClick={this.submitReview} color="secondary" size="lg" block><strong>SUBMIT</strong></Button>
+            </ModalFooter>
+        </Modal>
         <Row>
           <Col md={{size:8, offset:2}}>
             <Jumbotron>
@@ -145,6 +241,8 @@ class MoviePage extends Component {
                   <Button onClick={this.addToFavorites} size='lg'> Add to Favorites </Button>
                   <div className='space'/>
                   <Button onClick={this.addToWatchlist} size='lg'> Add to Watchlist </Button>
+                  <div className='space'/>
+                  <Button onClick={this.addReview} size='lg'> Add Review </Button>
 
                 </Col>
 
@@ -157,12 +255,24 @@ class MoviePage extends Component {
               <Col md={{size:6, offset:3 }}>
 
                   {Object.keys(this.state.reviews).map((key, index) => {
+                      let rating = this.state.reviews[index].rating;
+                      let ratingString = '';
+
+                      if      (rating > 4)  { ratingString = ' ★ ★ ★ ★ ★ '}
+                      else if (rating > 3)  { ratingString = ' ★ ★ ★ ★ '}
+                      else if (rating > 2)  { ratingString = ' ★ ★ ★ '}
+                      else if (rating > 1)  { ratingString = ' ★ ★ '}
+                      else                  { ratingString = ' ★ '}
+
                       return(
                           <Jumbotron key={key}>
-                              <h3> \"{this.state.reviews[index].body.substr(0,50)}\"... </h3>
+                              <h2> &quot;{this.state.reviews[index].body}&quot;... </h2>
+                              <div className='space'/>
+                              <h1 align="middle">&emsp;<Badge>{ratingString}</Badge>&emsp;</h1>
+                              <div className='space'/>
                               <hr className="my-2" />
-                              <h5> {this.state.reviews[index].user}</h5>
-                              <h5> {this.state.reviews[index].user}</h5>
+                              <div className='space'/>
+                              <h4> User: {this.state.reviews[index].user}</h4>
                           </Jumbotron>
                       );
                   })}
