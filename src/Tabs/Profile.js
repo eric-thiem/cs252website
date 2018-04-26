@@ -18,7 +18,15 @@ class Profile extends Component {
   }
 
   componentWillMount(){
-    this.getUserDoc();
+    if(!this.state.username){
+      this.setState({
+        username: sessionStorage.getItem('username'),
+      }, function () {
+        this.getUserDoc();
+      });
+    } else {
+      this.getUserDoc();
+    }
   }
 
   getUserDoc(){
@@ -57,14 +65,14 @@ class Profile extends Component {
     switch(table){
       case 'favorites':
         history.push({
-          pathname: '/movie-page',
+          pathname: '/cs252website/movie-page',
           search: this.state.userFavorites[index].imdbid,
         });
         window.location.reload();
         break;
       case 'watchlist':
         history.push({
-          pathname: '/movie-page',
+          pathname: '/cs252website/movie-page',
           search: this.state.userWatchlist[index].imdbid,
         });
         window.location.reload();
@@ -77,7 +85,7 @@ class Profile extends Component {
   viewUsersReviews = () => {
     let self = this;
     history.push({
-      pathname: '/my-reviews',
+      pathname: '/cs252website/my-reviews',
       search: self.state.username,
     });
     window.location.reload();

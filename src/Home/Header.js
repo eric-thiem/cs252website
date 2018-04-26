@@ -29,7 +29,7 @@ class Header extends Component {
   onProfile = () => {
     let user = sessionStorage.getItem('username');
     history.push({
-      pathname: '/profile',
+      pathname: '/cs252website/profile',
       search: user,
     });
     window.location.reload();
@@ -39,10 +39,10 @@ class Header extends Component {
     return (
       <div>
         <Navbar color="light" light expand="md">
-          <NavbarBrand href="/home"><h1>SliverScreen</h1></NavbarBrand>
+          <NavbarBrand href="/cs252website/home"><h1>SliverScreen</h1></NavbarBrand>
 
           <Col md='3'>
-            <Button href='/movie-search'> Search Movies and TV Shows </Button>
+            <Button href='/cs252website/movie-search'> Search Movies and TV Shows </Button>
           </Col>
 
           <NavbarToggler onClick={this.toggle} />
@@ -51,7 +51,7 @@ class Header extends Component {
             <Nav className="ml-auto" navbar>
 
               <NavItem>
-                <NavLink href="/connections">
+                <NavLink href="/cs252website/connections">
                   <h4>
                     Connections
                   </h4>
@@ -59,7 +59,7 @@ class Header extends Component {
               </NavItem>
 
               <NavItem>
-                <NavLink href="/my-reviews">
+                <NavLink href="/cs252website/my-reviews">
                   <h4>
                     My Reviews
                   </h4>
@@ -67,7 +67,7 @@ class Header extends Component {
               </NavItem>
 
               <NavItem>
-                <NavLink href="/watchlist">
+                <NavLink href="/cs252website/watchlist">
                   <h4>
                     Watchlist
                   </h4>
@@ -75,7 +75,7 @@ class Header extends Component {
               </NavItem>
 
               <NavItem>
-                <NavLink href="/my-favorites">
+                <NavLink href="/cs252website/my-favorites">
                   <h4>
                     My Favorites
                   </h4>
@@ -97,7 +97,7 @@ class Header extends Component {
                     </h5>
                   </DropdownItem>
 
-                  <DropdownItem onClick={this.signOut} href='/sign-in'>
+                  <DropdownItem onClick={this.signOut} href='/cs252website/sign-in'>
                     <h5>Sign Out</h5>
                   </DropdownItem>
 

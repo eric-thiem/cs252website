@@ -42,7 +42,7 @@ class MovieSearch extends Component {
   getMovie = (index) => {
     let movieData = this.state.searchResults.results[index];
     history.push({
-      pathname: '/movie-page',
+      pathname: '/cs252website/movie-page',
       search: movieData.imdbid,
     });
     window.location.reload();

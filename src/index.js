@@ -8,7 +8,7 @@ import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 
 ReactDOM.render(
-  <BrowserRouter basename={process.env.PUBLIC_URL}>
+  <BrowserRouter>
     <App/>
   </BrowserRouter>,
   document.getElementById('root')

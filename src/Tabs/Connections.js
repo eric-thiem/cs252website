@@ -104,7 +104,7 @@ class Connections extends Component {
 
   goToUser = (index) => {
     history.push({
-      pathname: '/profile',
+      pathname: '/cs252website/profile',
       search: this.state.connections[index],
     });
     window.location.reload();
