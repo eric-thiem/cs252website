@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
 import {Row, Col, Jumbotron, Button} from 'reactstrap';
 import {firestore} from "../base";
+import ReviewInput from './ReviewInput';
 import './Tabs.css';
 
-class Watchlist extends Component {
+class MyFavorites extends Component {
 
   constructor(props){
     super(props);
 
     this.state = {
       myRef: firestore.collection('users').doc(sessionStorage.getItem('user')),
+      favorites: [],
+
+      reviewOpen: -1,
       doneLoading: false,
     }
   }
@@ -38,6 +42,18 @@ class Watchlist extends Component {
     }).catch(function(error){
       console.log('Error deleting from favorites', (error));
     })
+  };
+
+  openReview = (index) => {
+    if(this.state.reviewOpen === index){
+      this.setState({
+        reviewOpen: -1,
+      });
+    } else {
+      this.setState({
+        reviewOpen: index,
+      });
+    }
   };
 
   render(){
@@ -79,7 +95,12 @@ class Watchlist extends Component {
                       <a href={this.state.favorites[index].imdburl}> Visit IMDB Page </a>
 
                       <div className='space'/>
-                      <Button size='lg'> Write Review </Button>
+                      <Button size='lg' onClick={() => {this.openReview(index)}}> Write Review </Button>
+
+                      {this.state.reviewOpen === index
+                        ? <ReviewInput movie={this.state.favorites[index]}/>
+                        : null
+                      }
 
                       <div className='space'/>
                       <Button size='lg' onClick={() => this.removeFromFavorites(index)}> Remove from Favorites </Button>
@@ -98,4 +119,4 @@ class Watchlist extends Component {
 
 }
 
-export default Watchlist;
+export default MyFavorites;

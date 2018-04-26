@@ -74,6 +74,15 @@ class Profile extends Component {
     }
   };
 
+  viewUsersReviews = () => {
+    let self = this;
+    history.push({
+      pathname: '/my-reviews',
+      search: self.state.username,
+    });
+    window.location.reload();
+  };
+
   render(){
 
     if(!this.state.doneLoading){
@@ -144,7 +153,7 @@ class Profile extends Component {
             <Table hover>
               <thead>
               <tr>
-                <th>Reviews</th>
+                <th onClick={this.viewUsersReviews}>Click to view {this.state.username}'s Reviews</th>
               </tr>
               </thead>
 
@@ -152,7 +161,8 @@ class Profile extends Component {
                 return (
                   <tbody key={key}>
                   <tr onClick={() => this.getMovie(index, 'watchlist')}>
-                    <td>Review</td>
+                    <td>{this.state.userReviews[index].title}</td>
+                    <td>{this.state.userReviews[index].year}</td>
                   </tr>
                   </tbody>
                 );

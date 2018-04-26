@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Row, Col, Jumbotron, Button} from 'reactstrap';
+import ReviewInput from './ReviewInput';
 import {firestore} from "../base";
 
 class Watchlist extends Component {
@@ -10,6 +11,8 @@ class Watchlist extends Component {
     this.state = {
       myRef: firestore.collection('users').doc(sessionStorage.getItem('user')),
       watchlist: [],
+
+      reviewOpen: -1,
       doneLoading: false,
     }
   }
@@ -38,6 +41,18 @@ class Watchlist extends Component {
     }).catch(function(error){
       console.log('Error deleting from watchlist', (error));
     })
+  };
+
+  openReview = (index) => {
+    if(this.state.reviewOpen === index){
+      this.setState({
+        reviewOpen: -1,
+      });
+    } else {
+      this.setState({
+        reviewOpen: index,
+      });
+    }
   };
 
   render(){
@@ -79,7 +94,12 @@ class Watchlist extends Component {
                       <a href={this.state.watchlist[index].imdburl}> Visit IMDB Page </a>
 
                       <div className='space'/>
-                      <Button size='lg'> Write Review </Button>
+                      <Button size='lg' onClick={() => {this.openReview(index)}}> Write Review </Button>
+
+                      {this.state.reviewOpen === index
+                        ? <ReviewInput movie={this.state.watchlist[index]}/>
+                        : null
+                      }
 
                       <div className='space'/>
                       <Button size='lg' onClick={() => this.removeFromWatchlist(index)}> Remove from Watchlist </Button>
