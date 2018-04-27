@@ -1,6 +1,7 @@
-import React, {Component} from 'react'
-import {fireauth} from "../base";
+import React, {Component} from 'react';
+import {fireauth} from '../base';
 import { Button, Col, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import history from '../history';
 
 class Header extends Component {
   constructor(props) {
@@ -25,14 +26,23 @@ class Header extends Component {
     });
   }
 
+  onProfile = () => {
+    let user = sessionStorage.getItem('username');
+    history.push({
+      pathname: '/cs252website/profile',
+      search: user,
+    });
+    window.location.reload();
+  };
+
   render(){
     return (
       <div>
         <Navbar color="light" light expand="md">
-          <NavbarBrand href="/home"><h1>SliverScreen</h1></NavbarBrand>
+          <NavbarBrand href="/cs252website/home"><h1>SliverScreen</h1></NavbarBrand>
 
           <Col md='3'>
-            <Button href='/movie-search'> Search Movies and TV Shows </Button>
+            <Button href='/cs252website/movie-search'> Search Movies and TV Shows </Button>
           </Col>
 
           <NavbarToggler onClick={this.toggle} />
@@ -41,7 +51,7 @@ class Header extends Component {
             <Nav className="ml-auto" navbar>
 
               <NavItem>
-                <NavLink href="/connections">
+                <NavLink href="/cs252website/connections">
                   <h4>
                     Connections
                   </h4>
@@ -49,7 +59,7 @@ class Header extends Component {
               </NavItem>
 
               <NavItem>
-                <NavLink href="/my-reviews">
+                <NavLink href="/cs252website/my-reviews">
                   <h4>
                     My Reviews
                   </h4>
@@ -57,7 +67,7 @@ class Header extends Component {
               </NavItem>
 
               <NavItem>
-                <NavLink href="/watchlist">
+                <NavLink href="/cs252website/watchlist">
                   <h4>
                     Watchlist
                   </h4>
@@ -65,7 +75,7 @@ class Header extends Component {
               </NavItem>
 
               <NavItem>
-                <NavLink href="/my-favorites">
+                <NavLink href="/cs252website/my-favorites">
                   <h4>
                     My Favorites
                   </h4>
@@ -81,13 +91,13 @@ class Header extends Component {
 
                 <DropdownMenu right>
 
-                  <DropdownItem href='/profile'>
+                  <DropdownItem onClick={this.onProfile}>
                     <h5>
                       Profile
                     </h5>
                   </DropdownItem>
 
-                  <DropdownItem onClick={this.signOut} href='/sign-in'>
+                  <DropdownItem onClick={this.signOut} href='/cs252website/sign-in'>
                     <h5>Sign Out</h5>
                   </DropdownItem>
 

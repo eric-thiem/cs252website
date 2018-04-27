@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Switch, Route} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import Home from './Home/Home';
 import SignIn from './SignIn/SignIn';
 import CreateAccount from './SignIn/CreateAccount';
@@ -68,64 +68,68 @@ class Main extends Component {
     return(
       <Switch>
 
-        <Route path='/home' render={() => (
+        <Route path={'/cs252website/home'} render={() => (
           this.isSignedIn()
             ? <Home uid={this.state.uid}/>
             : <SignIn/>
         )}/>
 
-        <Route path='/sign-in' render={() => (
+        <Route path='/cs252website/sign-in' render={() => (
           this.isSignedIn()
-            ? <Home uid={this.state.uid}/>
+            ? <Redirect to='/cs252website/home'/>
             : <SignIn/>
         )}/>
 
-        <Route path='/create-account' render={() => (
+        <Route path='/cs252website/create-account' render={() => (
           this.isSignedIn()
             ? <Home uid={this.state.uid}/>
             : <CreateAccount/>
         )}/>
 
-        <Route path='/movie-search' render={() => (
+        <Route path='/cs252website/movie-search' render={() => (
           this.isSignedIn()
             ? <Home uid={this.state.uid} page='movie-search'/>
             : <SignIn/>
         )}/>
 
-        <Route path='/movie-page' render={() => (
+        <Route path='/cs252website/movie-page' render={() => (
           this.isSignedIn()
             ? <Home uid={this.state.uid} page='movie-page'/>
             : <SignIn/>
         )}/>
 
-        <Route path='/profile' render={() => (
+        <Route path='/cs252website/profile' render={() => (
           this.isSignedIn()
             ? <Home uid={this.state.uid} page='profile'/>
             : <SignIn/>
         )}/>
 
-        <Route path='/connections' render={() => (
+        <Route path='/cs252website/connections' render={() => (
           this.isSignedIn()
             ? <Home uid={this.state.uid} page='connections'/>
             : <SignIn/>
         )}/>
 
-        <Route path='/my-reviews' render={() => (
+        <Route path='/cs252website/my-reviews' render={() => (
           this.isSignedIn()
             ? <Home uid={this.state.uid} page='my-reviews'/>
             : <SignIn/>
         )}/>
 
-        <Route path='/watchlist' render={() => (
+        <Route path='/cs252website/watchlist' render={() => (
           this.isSignedIn()
             ? <Home uid={this.state.uid} page='watchlist'/>
             : <SignIn/>
         )}/>
 
-        <Route path='/my-favorites' render={() => (
+        <Route path='/cs252website/my-favorites' render={() => (
           this.isSignedIn()
             ? <Home uid={this.state.uid} page='my-favorites'/>
             : <SignIn/>
+        )}/>
+
+        <Route render={() => (
+          <Redirect to='/cs252website/sign-in'/>
         )}/>
 
       </Switch>

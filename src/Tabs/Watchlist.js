@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Row, Col, Jumbotron} from 'reactstrap';
+import {Row, Col, Jumbotron, Button} from 'reactstrap';
+import ReviewInput from './ReviewInput';
 import {firestore} from "../base";
 
 class Watchlist extends Component {
@@ -8,6 +9,10 @@ class Watchlist extends Component {
     super(props);
 
     this.state = {
+      myRef: firestore.collection('users').doc(sessionStorage.getItem('user')),
+      watchlist: [],
+
+      reviewOpen: -1,
       doneLoading: false,
     }
   }
@@ -19,8 +24,7 @@ class Watchlist extends Component {
   getWatchlist(){
     let self = this;
     let myWatchlist = [];
-    let myRef = firestore.collection('users').doc(sessionStorage.getItem('user'));
-    myRef.get().then(function (doc){
+    this.state.myRef.onSnapshot(function (doc){
       myWatchlist = doc.data().watchlist;
       self.setState({
         watchlist: myWatchlist,
@@ -28,6 +32,28 @@ class Watchlist extends Component {
       });
     });
   }
+
+  removeFromWatchlist = (index) => {
+    let self = this;
+    this.state.watchlist.splice(index, 1);
+    this.state.myRef.update({
+      watchlist: self.state.watchlist,
+    }).catch(function(error){
+      console.log('Error deleting from watchlist', (error));
+    })
+  };
+
+  openReview = (index) => {
+    if(this.state.reviewOpen === index){
+      this.setState({
+        reviewOpen: -1,
+      });
+    } else {
+      this.setState({
+        reviewOpen: index,
+      });
+    }
+  };
 
   render(){
 
@@ -43,19 +69,47 @@ class Watchlist extends Component {
       <div>
         <Row>
           <Col md={{size: '8', offset: '2'}}>
-            <Jumbotron>
-              <div className='text-center'>
 
-                {Object.keys(this.state.watchlist).map((key, index) => {
-                  return (
-                    <div key={key} className='text-center'>
-                      <h3>{this.state.connections[index]}</h3>
-                    </div>
-                  );
-                })}
+            <div className='text-center'>
+              <h1>Watchlist</h1>
+            </div>
 
-              </div>
-            </Jumbotron>
+            <div className='space'/>
+
+            {Object.keys(this.state.watchlist).map((key, index) => {
+              return (
+
+                <Jumbotron key={key}>
+                  <Row>
+                    <Col md='4'>
+                      <img src={this.state.watchlist[index].poster}/>
+                    </Col>
+
+                    <Col md='6'>
+
+                      <h1> {this.state.watchlist[index].title} </h1>
+
+                      <h3> Rating: {this.state.watchlist[index].rating} </h3>
+
+                      <a href={this.state.watchlist[index].imdburl}> Visit IMDB Page </a>
+
+                      <div className='space'/>
+                      <Button size='lg' onClick={() => {this.openReview(index)}}> Write Review </Button>
+
+                      {this.state.reviewOpen === index
+                        ? <ReviewInput movie={this.state.watchlist[index]}/>
+                        : null
+                      }
+
+                      <div className='space'/>
+                      <Button size='lg' onClick={() => this.removeFromWatchlist(index)}> Remove from Watchlist </Button>
+
+                    </Col>
+                  </Row>
+                </Jumbotron>
+
+              );
+            })}
           </Col>
         </Row>
       </div>

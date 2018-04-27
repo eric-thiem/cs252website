@@ -13,6 +13,13 @@ class MoviePage extends Component {
       loaded: false,
       modal:  false,
       reviewBodyBody: '',
+
+      favorites_message: '',
+      watch_message: '',
+      favorites_visible: false,
+      watchlist_visible: false,
+
+      showAddToHomepageButton: false,
     };
 
     this.addReview = this.addReview.bind(this);
@@ -60,11 +67,20 @@ class MoviePage extends Component {
         poster: self.state.poster,
         rating: self.state.rating,
         type: self.state.type,
+        year: self.state._year_data,
+        imdbid: self.state.imdbid,
+        imdburl: self.state.imdburl,
       };
+
       currentFavorites.push(movieData);
 
       myRef.update({
         favorites: currentFavorites
+      }).then(function() {
+        self.setState({
+          favorites_message: `Successfully added ${self.state.title} to your favorite's list.`,
+          favorites_visible: true,
+        });
       }).catch(function (error) {
         console.error("Error updating favorites" + (error));
       });
@@ -84,11 +100,19 @@ class MoviePage extends Component {
         poster: self.state.poster,
         rating: self.state.rating,
         type: self.state.type,
+        year: self.state._year_data,
+        imdbid: self.state.imdbid,
+        imdburl: self.state.imdburl,
       };
       currentWatchlist.push(movieData);
 
       myRef.update({
         watchlist: currentWatchlist
+      }).then(function() {
+        self.setState({
+          watch_message: `Successfully added ${self.state.title} to your watchlist.`,
+          watchlist_visible: true,
+        });
       }).catch(function (error) {
         console.error("Error updating watchlist" + (error));
       });
@@ -172,6 +196,43 @@ class MoviePage extends Component {
       });
     }
 
+  addToHomepage = () => {
+    let self = this;
+    let currentMovieList = [];
+    let movieRef = firestore.collection('movies').doc('homepage');
+    movieRef.get().then(function (doc) {
+      currentMovieList = doc.data().movies;
+      let movieData = {
+        title: self.state.title,
+        poster: self.state.poster,
+        imdbid: self.state.imdbid,
+      };
+      currentMovieList.push(movieData);
+
+      movieRef.update({
+        movies: currentMovieList,
+      }).catch(function (error) {
+        console.log('Error updating home page movie list', (error));
+      });
+    }).catch(function (error) {
+      console.log('Error updaing homepage movies', (error));
+    });
+  };
+
+  onFavoritesDismiss = () => {
+    this.setState({
+      favorites_visible: false,
+      favorites_message: '',
+    });
+  };
+
+  onWatchlistDismiss = () => {
+    this.setState({
+      watchlist_visible: false,
+      watch_message: '',
+    });
+  };
+
   render() {
 
       if(this.state.loaded === false)
@@ -238,10 +299,37 @@ class MoviePage extends Component {
 
                   <div className='space'/>
                   <Button onClick={this.addToFavorites} size='lg'> Add to Favorites </Button>
+
+                  {this.state.favorites_visible
+                    ? <div className='space'/>
+                    : <div/>
+                  }
+
+                  <Alert color="success" isOpen={this.state.favorites_visible} toggle={this.onFavoritesDismiss}>
+                    {this.state.favorites_message}
+                  </Alert>
+
                   <div className='space'/>
                   <Button onClick={this.addToWatchlist} size='lg'> Add to Watchlist </Button>
                   <div className='space'/>
                   <Button onClick={this.addReview} size='lg'> Add Review </Button>
+
+                  {this.state.watchlist_visible
+                    ? <div className='space'/>
+                    : <div/>
+                  }
+
+                  <Alert color="success" isOpen={this.state.watchlist_visible} toggle={this.onWatchlistDismiss}>
+                    {this.state.watch_message}
+                  </Alert>
+
+                  {this.state.showAddToHomepageButton
+                    ?
+                    <div>
+                      <Button onClick={this.addToHomepage} size='lg'> Add to HomePage </Button>
+                    </div>
+                    : null
+                  }
 
                 </Col>
 
@@ -284,18 +372,3 @@ class MoviePage extends Component {
 }
 
 export default MoviePage;
-/*
-<Row>
-    <Col md={{size:6, offset:3 }}>
-        {Object.keys(this.state.reviews).map((key, index) => {
-            return (
-                <Jumbotron>
-                    <h3> \"{this.state.plot.substr(0,50)}\"... </h3>
-                    <hr className="my-2" />
-                    <h5> {this.state.</h5>
-                        </Jumbotron>
-                        );
-                        })}
-                    </Col>
-                </Row>
-*/

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import {Row, Col, Input, Button, Form, Alert, Jumbotron} from 'reactstrap';
+import {Row, Col, Input, Button, Form, Alert, Jumbotron, Table} from 'reactstrap';
 import {firestore} from '../base';
+import history from "../history";
 
 class Connections extends Component {
 
@@ -10,6 +11,7 @@ class Connections extends Component {
     this.state = {
       uid: this.props.uid,
       myUsername: sessionStorage.getItem('username'),
+      myRef: firestore.collection('users').doc(sessionStorage.getItem('user')),
 
       connections: [],
       search_text: '',
@@ -91,8 +93,7 @@ class Connections extends Component {
   getConnections(){
     let self = this;
     let myConnections = [];
-    let myRef = firestore.collection('users').doc(sessionStorage.getItem('user'));
-    myRef.get().then(function (doc){
+    this.state.myRef.onSnapshot(function (doc){
       myConnections = doc.data().connections;
       self.setState({
         connections: myConnections,
@@ -101,6 +102,14 @@ class Connections extends Component {
     });
   }
 
+  goToUser = (index) => {
+    history.push({
+      pathname: '/cs252website/profile',
+      search: this.state.connections[index],
+    });
+    window.location.reload();
+  };
+
   onDismiss = () => {
     this.setState({
       error_visible: false
@@ -108,8 +117,6 @@ class Connections extends Component {
   };
 
   render(){
-
-    //TODO make connections a clickable table
 
     if(!this.state.doneLoading){
       return(
@@ -152,15 +159,22 @@ class Connections extends Component {
                 <hr />
                 <div style={{height: '2em'}}/>
 
-                <h2><u>My Connections:</u></h2>
+                <h2><u>Your Connections:</u></h2>
+                <div className='space'/>
 
-                {Object.keys(this.state.connections).map((key, index) => {
-                  return (
-                    <div key={key} className='text-center'>
-                      <h3>{this.state.connections[index]}</h3>
-                    </div>
-                  );
-                })}
+                <Table hover>
+
+                  {Object.keys(this.state.connections).map((key, index) => {
+                    return (
+                      <tbody key={key}>
+                      <tr onClick={() => this.goToUser(index)}>
+                        <td><h4>{this.state.connections[index]}</h4></td>
+                      </tr>
+                      </tbody>
+                    );
+                  })}
+
+                </Table>
 
               </div>
             </Jumbotron>
