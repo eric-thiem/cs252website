@@ -160,6 +160,8 @@ class MoviePage extends Component {
           else if(self.state.reviewRating == "★★★" )       { rat = 3 }
           else if(self.state.reviewRating == "★★★★" )      { rat = 4 }
           else if(self.state.reviewRating == "★★★★★" )      { rat = 5 }
+          
+          console.log(sessionStorage.getItem('usename'));
 
 
           let movieReview = {
