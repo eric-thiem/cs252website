@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {firestore} from "../base";
 import './MoviePage.css'
 import history from '../history';
+import { Form, Input, Button, Alert, Row, Col, Jumbotron} from 'reactstrap';
 
 class MoviePage extends Component {
 
