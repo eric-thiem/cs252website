@@ -32,7 +32,7 @@ class ReviewInput extends Component {
         title: self.state.movie.title,
         content: self.state.reviewText,
         poster: self.state.movie.poster,
-        year: self.state.movie._year_data,
+        //year: self.state.movie._year_data,
         imdbid: self.state.movie.imdbid,
       };
       reviews.push(newReview);

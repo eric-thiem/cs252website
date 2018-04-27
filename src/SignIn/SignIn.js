@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-
 import { fireauth } from '../base.js';
-
 import { NavLink, Redirect } from 'react-router-dom';
 import { Form, Input, Button, Alert, Row, Col} from 'reactstrap';
+import history from '../history';
 import './SignIn.css';
 
 class SignIn extends Component {
@@ -40,6 +39,13 @@ class SignIn extends Component {
     this.setState({
       error_visible: false,
     });
+  };
+
+  createAccount = () => {
+    history.push({
+      pathname: '/cs252website/create-account',
+    });
+    window.location.reload();
   };
 
   render() {
@@ -97,9 +103,9 @@ class SignIn extends Component {
 
               </Form>
 
-              <NavLink style={{ textDecoration: 'none' }} to="/create-account">
-                <Button className='signInButton'> Create Account </Button>
-              </NavLink>
+              <div style={{display: 'flex', justifyContent: 'center'}}>
+                <Button className='signInButton' onClick={this.createAccount}> Create Account </Button>
+              </div>
 
               <div style={{height: '1em'}}/>
 

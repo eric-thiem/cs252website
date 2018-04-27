@@ -15,6 +15,8 @@ class MoviePage extends Component {
       watch_message: '',
       favorites_visible: false,
       watchlist_visible: false,
+
+      showAddToHomepageButton: false,
     };
   }
 
@@ -111,6 +113,29 @@ class MoviePage extends Component {
     });
   };
 
+  addToHomepage = () => {
+    let self = this;
+    let currentMovieList = [];
+    let movieRef = firestore.collection('movies').doc('homepage');
+    movieRef.get().then(function (doc) {
+      currentMovieList = doc.data().movies;
+      let movieData = {
+        title: self.state.title,
+        poster: self.state.poster,
+        imdbid: self.state.imdbid,
+      };
+      currentMovieList.push(movieData);
+
+      movieRef.update({
+        movies: currentMovieList,
+      }).catch(function (error) {
+        console.log('Error updating home page movie list', (error));
+      });
+    }).catch(function (error) {
+      console.log('Error updaing homepage movies', (error));
+    });
+  };
+
   onFavoritesDismiss = () => {
     this.setState({
       favorites_visible: false,
@@ -178,6 +203,14 @@ class MoviePage extends Component {
                   <Alert color="success" isOpen={this.state.watchlist_visible} toggle={this.onWatchlistDismiss}>
                     {this.state.watch_message}
                   </Alert>
+
+                  {this.state.showAddToHomepageButton
+                    ?
+                    <div>
+                      <Button onClick={this.addToHomepage} size='lg'> Add to HomePage </Button>
+                    </div>
+                    : null
+                  }
 
                 </Col>
 
