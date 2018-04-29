@@ -13,12 +13,17 @@ class MoviePage extends Component {
       imdbID: history.location.search.slice(1),
       loaded: false,
       modal:  false,
-      reviewBodyBody: '',
+
+      reviewBody: '',
+      reviewRating: null,
+      reviews: [],
 
       favorites_message: '',
       watch_message: '',
       favorites_visible: false,
       watchlist_visible: false,
+      review_message: '',
+      review_visible: false,
 
       showAddToHomepageButton: false,
     };
@@ -29,7 +34,7 @@ class MoviePage extends Component {
   componentWillMount(){
     const imdb = require('imdb-api');
     let self = this;
-    this.getReviews()
+    this.getReviews();
     imdb.getById( self.state.imdbID , {apiKey: '32978a97', timeout: 30000}).then(movie => {
       self.setState( {
         title:          movie.title         ,
@@ -121,83 +126,102 @@ class MoviePage extends Component {
   };
 
   addReview = () => {
-    let self = this;
     this.setState({
-        modal: !this.state.modal
-    })
-  }
+      modal: !this.state.modal
+    });
+  };
 
   handleTextChange = (event) => {
     this.setState({
-       reviewBody:  event.target.value
-    })
-  }
+      reviewBody:  event.target.value
+    });
+  };
 
   handleRatingChange = (event) => {
     this.setState({
-        reviewRating: event.target.value
-    })
-  }
+      reviewRating: event.target.value
+    });
+  };
 
   submitReview = () => {
     this.setState({
-        modal: !this.state.modal
+      modal: !this.state.modal
     });
 
-      let self = this;
-      let currentReviews = [];
-      let myRef = firestore.collection('movies').doc(this.state.imdbID);
+    let self = this;
+    let currentReviews = [];
+    let myRef = firestore.collection('movies').doc(this.state.imdbID);
 
-      console.log('myRef');
-      console.log(myRef);
+    myRef.get().then(function (doc){
 
-      myRef.get().then(function (doc){
-          currentReviews = doc.data().reviews;
+      let rat;
+      if (self.state.reviewRating === "★" ){
+        rat = 1;
+      } else if (self.state.reviewRating === "★★" ){
+        rat = 2;
+      } else if (self.state.reviewRating === "★★★" ){
+        rat = 3;
+      } else if (self.state.reviewRating === "★★★★" ){
+        rat = 4;
+      } else if (self.state.reviewRating === "★★★★★" ){
+        rat = 5;
+      }
 
-          let rat;
-          if     (self.state.reviewRating == "★" )        { rat = 1 }
-          else if(self.state.reviewRating == "★★" )        { rat = 2 }
-          else if(self.state.reviewRating == "★★★" )       { rat = 3 }
-          else if(self.state.reviewRating == "★★★★" )      { rat = 4 }
-          else if(self.state.reviewRating == "★★★★★" )      { rat = 5 }
-          
-          console.log(sessionStorage.getItem('usename'));
+      let movieReview = {
+        body: self.state.reviewBody,
+        rating: rat,
+        user: sessionStorage.getItem('username'),
+      };
 
-
-          let movieReview = {
-              body: self.state.reviewBody,
-              rating: rat,
-              user: sessionStorage.getItem('username'),
-          };
-          currentReviews.push(movieReview);
-
-          myRef.update({
-              reviews: currentReviews
-          }).catch(function (error) {
-              console.error("Error updating reviews" + (error));
+      if(doc.exists){
+        currentReviews = doc.data().reviews;
+        currentReviews.push(movieReview);
+        myRef.update({
+          reviews: currentReviews
+        }).then(function () {
+          self.setState({
+            review_message: 'Successfully added public review.',
+            review_visible: true,
           });
-      });
+        }).catch(function (error) {
+          console.error("Error updating reviews" + (error));
+        });
+      } else {
+        currentReviews.push(movieReview);
+        myRef.set({
+          reviews: currentReviews
+        }).then(function () {
+          self.setState({
+            review_message: 'Successfully added public review.',
+            review_visible: true,
+          });
+        }).catch(function (error) {
+          console.error("Error updating reviews" + (error));
+        });
+      }
+    });
 
   };
 
-  getReviews()
-  {
-      let self = this;
-      let movieReviews = [];
-      let myRef = firestore.collection('movies').doc(this.state.imdbID);
-      myRef.get().then(function (doc){
-          console.log(doc.data());
-          movieReviews = doc.data().reviews;
-          self.setState({
-              reviews: movieReviews,
-              loaded: true,
-          }, function(){
-              console.log(this.state.reviews);
-          });
-      }).catch(function(error){
-          console.log('error gettting reviews' + (error));
-      });
-    }
+  getReviews() {
+    let self = this;
+    let movieReviews = [];
+    let myRef = firestore.collection('movies').doc(this.state.imdbID);
+    myRef.onSnapshot(function (doc){
+      if(doc.exists){
+        movieReviews = doc.data().reviews;
+        self.setState({
+          reviews: movieReviews,
+          loaded: true,
+        });
+      } else {
+        self.setState({
+          reviews: [],
+          loaded: true,
+        });
+      }
+    });
+  }
 
   addToHomepage = () => {
     let self = this;
@@ -236,42 +260,49 @@ class MoviePage extends Component {
     });
   };
 
+  onReviewDismiss = () => {
+    this.setState({
+      review_visible: false,
+      review_message: '',
+    });
+  };
+
   render() {
 
-      if(this.state.loaded === false)
-      {
-          return(
-              <div className='text-center'>
-                  <h3>Loading Connections...</h3>
-              </div>
-          )
-      }
-    console.log(this.state.reviews);
+    if(!this.state.loaded){
+      return (
+        <div className='text-center'>
+          <h3>Loading Movie...</h3>
+        </div>
+      );
+    }
+
+
     return (
       <div>
         <Modal isOpen={this.state.modal} toggle={this.getReviews} className={this.props.className}>
-            <ModalHeader toggle={this.getReviews}><strong>Write a Review</strong></ModalHeader>
-            <ModalBody>
+          <ModalHeader toggle={this.getReviews}><strong>Write a Review</strong></ModalHeader>
+          <ModalBody>
 
-              <Form>
-                <FormGroup>
-                    <Label for="reviewBody">Review:</Label>
-                    <Input onChange={this.handleTextChange} value={this.state.reviewBody} type="textarea" bsSize='lg' name="text" id="reviewBody" />
-                    <Label for="exampleSelect">Rating:</Label>
-                    <Input onChange={this.handleRatingChange} value={this.state.reviewRating} type="select" name="select" id="exampleSelect">
-                        <option>★</option>
-                        <option>★★</option>
-                        <option>★★★</option>
-                        <option>★★★★</option>
-                        <option>★★★★★</option>
-                    </Input>
-                </FormGroup>
-              </Form>
+            <Form>
+              <FormGroup>
+                <Label for="reviewBody">Review:</Label>
+                <Input onChange={this.handleTextChange} type="textarea" bsSize='lg' name="text" id="reviewBody" />
+                <Label for="exampleSelect">Rating:</Label>
+                <Input onChange={this.handleRatingChange} type="select" name="select" id="exampleSelect">
+                  <option>★</option>
+                  <option>★★</option>
+                  <option>★★★</option>
+                  <option>★★★★</option>
+                  <option>★★★★★</option>
+                </Input>
+              </FormGroup>
+            </Form>
 
-            </ModalBody>
-            <ModalFooter>
-                <Button onClick={this.submitReview} color="secondary" size="lg" block><strong>SUBMIT</strong></Button>
-            </ModalFooter>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={this.submitReview} color="secondary" size="lg" block><strong>SUBMIT</strong></Button>
+          </ModalFooter>
         </Modal>
         <Row>
           <Col md={{size:8, offset:2}}>
@@ -313,9 +344,8 @@ class MoviePage extends Component {
                   </Alert>
 
                   <div className='space'/>
+
                   <Button onClick={this.addToWatchlist} size='lg'> Add to Watchlist </Button>
-                  <div className='space'/>
-                  <Button onClick={this.addReview} size='lg'> Add Review </Button>
 
                   {this.state.watchlist_visible
                     ? <div className='space'/>
@@ -325,6 +355,21 @@ class MoviePage extends Component {
                   <Alert color="success" isOpen={this.state.watchlist_visible} toggle={this.onWatchlistDismiss}>
                     {this.state.watch_message}
                   </Alert>
+
+                  <div className='space'/>
+
+                  <Button onClick={this.addReview} size='lg'> Add Public Review </Button>
+
+                  {this.state.review_visible
+                    ? <div className='space'/>
+                    : <div/>
+                  }
+
+                  <Alert color="success" isOpen={this.state.review_visible} toggle={this.onReviewDismiss}>
+                    {this.state.review_message}
+                  </Alert>
+
+                  <div className='space'/>
 
                   {this.state.showAddToHomepageButton
                     ?
@@ -341,33 +386,33 @@ class MoviePage extends Component {
             </Jumbotron>
           </Col>
         </Row>
-          <Row>
-              <Col md={{size:6, offset:3 }}>
+        <Row>
+          <Col md={{size:6, offset:3 }}>
 
-                  {Object.keys(this.state.reviews).map((key, index) => {
-                      let rating = this.state.reviews[index].rating;
-                      let ratingString = '';
+            {Object.keys(this.state.reviews).map((key, index) => {
+              let rating = this.state.reviews[index].rating;
+              let ratingString = '';
 
-                      if      (rating > 4)  { ratingString = ' ★ ★ ★ ★ ★ '}
-                      else if (rating > 3)  { ratingString = ' ★ ★ ★ ★ '}
-                      else if (rating > 2)  { ratingString = ' ★ ★ ★ '}
-                      else if (rating > 1)  { ratingString = ' ★ ★ '}
-                      else                  { ratingString = ' ★ '}
+              if      (rating > 4)  { ratingString = ' ★ ★ ★ ★ ★ '}
+              else if (rating > 3)  { ratingString = ' ★ ★ ★ ★ '}
+              else if (rating > 2)  { ratingString = ' ★ ★ ★ '}
+              else if (rating > 1)  { ratingString = ' ★ ★ '}
+              else                  { ratingString = ' ★ '}
 
-                      return(
-                          <Jumbotron key={key}>
-                              <h2> &quot;{this.state.reviews[index].body}&quot;... </h2>
-                              <div className='space'/>
-                              <h1 align="middle">&emsp;<Badge>{ratingString}</Badge>&emsp;</h1>
-                              <div className='space'/>
-                              <hr className="my-2" />
-                              <div className='space'/>
-                              <h4> User: {this.state.reviews[index].user}</h4>
-                          </Jumbotron>
-                      );
-                  })}
-              </Col>
-          </Row>
+              return(
+                <Jumbotron key={key}>
+                  <h2> &quot;{this.state.reviews[index].body}&quot;... </h2>
+                  <div className='space'/>
+                  <h1 align="middle">&emsp;<Badge>{ratingString}</Badge>&emsp;</h1>
+                  <div className='space'/>
+                  <hr className="my-2" />
+                  <div className='space'/>
+                  <h4> User: {this.state.reviews[index].user}</h4>
+                </Jumbotron>
+              );
+            })}
+          </Col>
+        </Row>
       </div>
     );
   }
