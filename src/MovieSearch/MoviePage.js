@@ -12,10 +12,10 @@ class MoviePage extends Component {
     this.state = {
       imdbID: history.location.search.slice(1),
       loaded: false,
-      modal:  false,
+      modal_open:  false,
 
       reviewBody: '',
-      reviewRating: null,
+      reviewRating: 5,
       reviews: [],
 
       favorites_message: '',
@@ -127,7 +127,7 @@ class MoviePage extends Component {
 
   addReview = () => {
     this.setState({
-      modal: !this.state.modal
+      modal_open: !this.state.modal_open
     });
   };
 
@@ -139,13 +139,13 @@ class MoviePage extends Component {
 
   handleRatingChange = (event) => {
     this.setState({
-      reviewRating: event.target.value
+      reviewRating: event.target.value.length,
     });
   };
 
   submitReview = () => {
     this.setState({
-      modal: !this.state.modal
+      modal_open: false,
     });
 
     let self = this;
@@ -154,22 +154,9 @@ class MoviePage extends Component {
 
     myRef.get().then(function (doc){
 
-      let rat;
-      if (self.state.reviewRating === "★" ){
-        rat = 1;
-      } else if (self.state.reviewRating === "★★" ){
-        rat = 2;
-      } else if (self.state.reviewRating === "★★★" ){
-        rat = 3;
-      } else if (self.state.reviewRating === "★★★★" ){
-        rat = 4;
-      } else if (self.state.reviewRating === "★★★★★" ){
-        rat = 5;
-      }
-
       let movieReview = {
         body: self.state.reviewBody,
-        rating: rat,
+        rating: self.state.reviewRating,
         user: sessionStorage.getItem('username'),
       };
 
@@ -267,6 +254,12 @@ class MoviePage extends Component {
     });
   };
 
+  modalToggle = () => {
+    this.setState({
+      modal_open: !this.state.modal_open,
+    });
+  };
+
   render() {
 
     if(!this.state.loaded){
@@ -280,30 +273,33 @@ class MoviePage extends Component {
 
     return (
       <div>
-        <Modal isOpen={this.state.modal} toggle={this.getReviews} className={this.props.className}>
-          <ModalHeader toggle={this.getReviews}><strong>Write a Review</strong></ModalHeader>
-          <ModalBody>
+        <Row>
+          <Modal isOpen={this.state.modal_open} className={this.props.className} toggle={this.modalToggle}>
+            <ModalHeader toggle={this.modalToggle}><strong>Write a Review</strong></ModalHeader>
+            <ModalBody>
 
-            <Form>
-              <FormGroup>
-                <Label for="reviewBody">Review:</Label>
-                <Input onChange={this.handleTextChange} type="textarea" bsSize='lg' name="text" id="reviewBody" />
-                <Label for="exampleSelect">Rating:</Label>
-                <Input onChange={this.handleRatingChange} type="select" name="select" id="exampleSelect">
-                  <option>★</option>
-                  <option>★★</option>
-                  <option>★★★</option>
-                  <option>★★★★</option>
-                  <option>★★★★★</option>
-                </Input>
-              </FormGroup>
-            </Form>
+              <Form>
+                <FormGroup>
+                  <Label for="reviewBody">Review:</Label>
+                  <Input onChange={this.handleTextChange} type="textarea" bsSize='lg' name="text" id="reviewBody" />
+                  <Label for="exampleSelect">Rating:</Label>
+                  <Input onChange={this.handleRatingChange} type="select" name="select" id="exampleSelect">
+                    <option>★★★★★</option>
+                    <option>★★★★</option>
+                    <option>★★★</option>
+                    <option>★★</option>
+                    <option>★</option>
+                  </Input>
+                </FormGroup>
+              </Form>
 
-          </ModalBody>
-          <ModalFooter>
-            <Button onClick={this.submitReview} color="secondary" size="lg" block><strong>SUBMIT</strong></Button>
-          </ModalFooter>
-        </Modal>
+            </ModalBody>
+            <ModalFooter>
+              <Button onClick={this.submitReview} color="secondary" size="lg" block><strong>SUBMIT</strong></Button>
+            </ModalFooter>
+          </Modal>
+        </Row>
+
         <Row>
           <Col md={{size:8, offset:2}}>
             <Jumbotron>
