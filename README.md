@@ -10,4 +10,4 @@ Justin Unterreiner: justinu222@gmail.com
 * [Firebase Organization](https://docs.google.com/spreadsheets/d/1PFqeyEReFzd1gFmab118Kpt7bBAJovHyIl0JzZwMacE/edit?usp=sharing "Firebase Organization")
 
 ## URL
-https://eric-thiem.github.io/cs252website/home
+https://eric-thiem.github.io/cs252website/
